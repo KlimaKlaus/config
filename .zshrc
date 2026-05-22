@@ -107,6 +107,10 @@ alias brew-uuc="brew update && brew upgrade && brew cleanup"
 alias yt-dlp="~/Desktop/code/yt-dlp/yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata --no-abort-on-error -o './playlist/%(playlist_index)s - %(title)s.%(ext)s'"
 alias repolicense="~/Desktop/code/repolicense-cli/zig-out/bin/repolicense"
 alias hermes-subprocess="ps aux | grep hermes | grep -v grep"
+alias ssh-termux='ssh "${TERMUX_USER}@${TERMUX_IP}" -p "${TERMUX_PORT}"'
+alias ssh-klaus='ssh "${KLAUS_USER}@${KLAUS_IP}"'
+alias ssh-klaus-dashboard='ssh -N -L 18789:"${KLAUS_DASHBOARD_PORT}" "${KLAUS_USER}"@"${KLAUS_IP}"'
+alias ssh-ecoray-data='ssh "${ECORAY_DATA_USER}@${ECORAY_DATA_IP}"'
 
                                     eval "$(starship init zsh)"
 export PATH=/usr/local/anaconda3/bin:$PATH
@@ -161,5 +165,6 @@ if [ -f ~/.zsh/.zshrc_secrets ]; then
   source ~/.zsh/.zshrc_secrets
 fi
 
-# digital ocean osws
-alias do-osws="ssh -i ~/.ssh/digital_ocean root@134.209.238.195"
+# Enforce Multica Docker Sandbox defaults natively
+export MULTICA_AGENT_RUNTIME_PROVIDER="docker"
+export MULTICA_AGENT_DEFAULT_IMAGE="ghcr.io/multica-ai/multica-agent-env:latest"
