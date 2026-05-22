@@ -1,18 +1,59 @@
 {
-  "lastChangelogVersion": "0.70.2",
+  "lastChangelogVersion": "0.74.0",
   "packages": [
-    "npm:pi-btw",
-    "npm:@tmustier/pi-usage-extension",
     "npm:pi-subagents",
-    "npm:@a5c-ai/babysitter-pi",
+    "npm:pi-rewind",
+    "npm:@juicesharp/rpiv-btw",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:pi-total-recall",
     "npm:pi-cmux",
-    "npm:@kmiyh/pi-undo-redo",
-    "npm:pi-web-access"
+    "npm:@ogulcancelik/pi-ghostty-theme-sync",
+    "npm:pi-superpowers"
   ],
-  "defaultProvider": "opencode",
-  "defaultModel": "big-pickle",
+  "defaultProvider": "xai",
+  "defaultModel": "grok-4.20-0309-reasoning",
   "defaultThinkingLevel": "medium",
   "extensions": [
-    "~/.pi/agent/extensions/session-stats.ts"
-  ]
+    "~/.pi/extensions/working-messages.ts"
+  ],
+  "memory": {
+    "lessonInjection": "selective",
+    "consolidationModel": "deepseek/deepseek-v4-flash"
+  },
+  "subagents": {
+    "agentOverrides": {
+      "planner": {
+        "model": "xai/grok-4.20-reasoning",
+        "thinkingLevel": "high",
+        "fallbackModels": [
+          "xai/grok-4.3"
+        ]
+      },
+      "reviewer": {
+        "model": "xai/grok-4.20-reasoning",
+        "thinkingLevel": "high",
+        "fallbackModels": [
+          "xai/grok-4.3"
+        ]
+      },
+      "scout": {
+        "model": "xai/grok-4-1-fast-reasoning",
+        "thinkingLevel": "medium",
+        "fallbackModels": [
+          "xai/grok-4.3"
+        ]
+      },
+      "worker": {
+        "model": "xai/grok-4.1-fast-reasoning",
+        "thinkingLevel": "medium",
+        "fallbackModels": [
+          "xai/grok-4.3"
+        ]
+      }
+    }
+  },
+  "theme": "ghostty-sync-29d3259e",
+  "compaction": {
+    "enabled": true
+  }
 }
