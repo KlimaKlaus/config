@@ -107,18 +107,29 @@
     "github.copilot.advanced": {
       "authPermissions": "minimal"
     },
+    "git.addAICoAuthor": false,
     "github.copilot.nextEditSuggestions.enabled": true,
     "FSharp.suggestGitignore": false,
     "gitlens.ai.model": "vscode",
     "gitlens.ai.vscode.model": "copilot:gpt-4.1",
     "python.analysis.typeCheckingMode": "standard",
     "chat.tools.urls.autoApprove": {
+      "https://code.visualstudio.com": true,
+      "https://github.com/microsoft/vscode/wiki/*": true,
       "https://docs.polymarket.com": true,
       "file:///Users/lucasfreytorreshanson/Desktop/code/osws/OSWS.Performance.Tests/Measurements/Measurement1ColdWideRangeRequest.cs": {
         "approveRequest": true,
         "approveResponse": false
       },
-      "https://g-research.github.io": true
+      "https://g-research.github.io": true,
+      "https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent/docs/extensions.md": {
+        "approveRequest": false,
+        "approveResponse": true
+      },
+      "https://github.com/minio/warp": {
+        "approveRequest": false,
+        "approveResponse": true
+      }
     },
     "github.experimental.multipleAccounts": true,
     "chat.tools.terminal.autoApprove": {

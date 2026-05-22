@@ -1,7 +1,7 @@
 ---
 description: |
   Use this agent when the orchestrator needs clarification on a vague task. You receive a simple task from orchestrator, ask 2-10 clarifying questions, and return a brief plan.
-model: "opencode/big-pickle"
+model: "zai/glm-4.5-air"
 mode: subagent
 tools:
   write: false

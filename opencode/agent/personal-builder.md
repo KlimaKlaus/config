@@ -12,7 +12,7 @@ description: |
   assistant: "Building the User model now"
   </example>
 
-model: "opencode/big-pickle"
+model: "zai/glm-4.5-air"
 mode: subagent
 ---
 

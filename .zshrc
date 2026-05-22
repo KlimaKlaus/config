@@ -160,3 +160,6 @@ TIMEFMT=$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
 if [ -f ~/.zsh/.zshrc_secrets ]; then
   source ~/.zsh/.zshrc_secrets
 fi
+
+# digital ocean osws
+alias do-osws="ssh -i ~/.ssh/digital_ocean root@134.209.238.195"

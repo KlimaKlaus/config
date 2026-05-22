@@ -12,7 +12,7 @@ description: |
   assistant: "Building the User model now"
   </example>
 
-model: "xai/grok-code-fast-1"
+model: "xai/grok-4-1-fast-reasoning"
 mode: subagent
 ---
 

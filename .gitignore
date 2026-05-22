@@ -103,3 +103,5 @@ lazygit/state.yml
 # Pi
 /.pi/agent/auth.json
 /.pi/agent/sessions/*
+/.pi/agent/pi-undo-redo/blobs/*
+/.pi/agent/run-history.jsonl
