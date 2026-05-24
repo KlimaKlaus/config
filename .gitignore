@@ -6,6 +6,7 @@
 # Claude
 */shell-snapshots/*
 /.claude/anthropic_key.sh
+/.claude/sandbox/*
 
 # LazyGit
 lazygit/state.yml
@@ -105,3 +106,21 @@ lazygit/state.yml
 /.pi/agent/sessions/*
 /.pi/agent/pi-undo-redo/blobs/*
 /.pi/agent/run-history.jsonl
+
+# Agent-of-empires
+/.agent-of-empires/agent_state.json
+/.agent-of-empires/agent_state.jsonl
+/.agent-of-empires/agent_state_backup.json
+/.agent-of-empires/agent_state_backup.jsonl
+/.agent-of-empires/sessions/*
+/.agent-of-empires/logs/*
+/.agent-of-empires/profiles/apple/sessions.json
+/.agent-of-empires/profiles/apple/sessions.json.bak
+/.agent-of-empires/profiles/default/sessions.json
+/.agent-of-empires/profiles/default/sessions.json.bak
+/.agent-of-empires/push*
+/.agent-of-empires/serve*
+/.agent-of-empires/update_cache.json
+
+# Multica
+/.multica/*
