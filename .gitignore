@@ -124,3 +124,6 @@ lazygit/state.yml
 
 # Multica
 /.multica/*
+
+# Tmux
+/.tmux/*
