@@ -11,7 +11,6 @@ split-divider-color = #fefefe
 unfocused-split-opacity = 0.85
 unfocused-split-fill = #1529FD
 
-
 keybind = ctrl+n=new_window
 
 keybind = shift+cmd+f=toggle_split_zoom
@@ -25,3 +24,5 @@ keybind = ctrl+a>n=next_tab
 keybind = ctrl+a>p=previous_tab
 
 window-save-state = always
+
+keybind = super+alt+ctrl+shift+a=text:\x02
