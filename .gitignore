@@ -127,3 +127,11 @@ lazygit/state.yml
 
 # Tmux
 /.tmux/*
+
+# omp
+/.omp/sessions/*
+/.omp/agent/session*/*
+/.omp/agent/agent.d*
+/.omp/agent/history*
+/.omp/agent/models*
+/.omp/agent/terminal*/*
