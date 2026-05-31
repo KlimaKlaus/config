@@ -2,7 +2,7 @@
 description: |
   Use this agent when the orchestrator needs read-only discovery, codebase exploration, or file-level context before implementation. It inspects the workspace, identifies the relevant files and behaviors, and returns concise findings without making edits.
 mode: subagent
-model: "zai/glm-4.5-air"
+model: "opencode/qwen3.6-plus-free"
 tools:
   write: false
   edit: false

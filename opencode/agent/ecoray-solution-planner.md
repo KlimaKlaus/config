@@ -1,7 +1,7 @@
 ---
 description: |
   Use this agent when the orchestrator needs clarification on a vague task. You receive a simple task from orchestrator, ask 2-10 clarifying questions, and return a brief plan.
-model: "xai/grok-4-1-fast"
+model: "deepseek/deepseek-v4-flash"
 mode: subagent
 tools:
   write: false

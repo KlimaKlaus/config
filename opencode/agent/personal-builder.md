@@ -12,7 +12,7 @@ description: |
   assistant: "Building the User model now"
   </example>
 
-model: "zai/glm-4.5-air"
+model: "opencode/qwen3.6-plus-free"
 mode: subagent
 ---
 

@@ -2,7 +2,7 @@
 description: |
   Use this agent when the user presents a task, feature request, or bug to work on. This orchestrator coordinates the full workflow: assesses scope, creates worktree, and spawns sub-agents as needed.
 mode: primary
-model: "xai/grok-4.20-reasoning"
+model: "deepseek/deepseek-v4-pro"
 tools:
   write: false
   edit: false

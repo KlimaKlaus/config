@@ -2,7 +2,7 @@
 description: |
   Use this agent when the orchestrator needs read-only discovery, codebase exploration, or file-level context before implementation. It inspects the workspace, identifies the relevant files and behaviors, and returns concise findings without making edits.
 mode: subagent
-model: "xai/grok-4-1-fast"
+model: "deepseek/deepseek-v4-flash"
 tools:
   write: false
   edit: false

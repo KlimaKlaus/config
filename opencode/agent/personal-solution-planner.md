@@ -1,7 +1,7 @@
 ---
 description: |
   Use this agent when the orchestrator needs clarification on a vague task. You receive a simple task from orchestrator, ask 2-10 clarifying questions, and return a brief plan.
-model: "zai/glm-4.5-air"
+model: "opencode/qwen3.6-plus-free"
 mode: subagent
 tools:
   write: false
