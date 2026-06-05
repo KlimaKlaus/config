@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 export default function (pi: ExtensionAPI) {
   // Notify after every response. Change to "session_shutdown" to only
   // notify when the omp process exits.
-  pi.on("turn_end", async () => {
+  pi.on("session_shutdown", async () => {
     try {
       execFileSync("cmux", [
         "notify",

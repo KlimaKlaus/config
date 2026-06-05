@@ -6,6 +6,13 @@
 # Claude
 */shell-snapshots/*
 /.claude/anthropic_key.sh
+/.claude/.credentials.json
+
+# Nix build artifacts
+/result
+
+# VS Code profiles (may contain personal settings)
+/Code/User/profiles/
 /.claude/sandbox/*
 
 # LazyGit
@@ -98,14 +105,19 @@ lazygit/state.yml
 /.hermes/hermes-agent/dist/
 /.hermes/hermes-agent/**/node_modules/
 
-# zsh secrets
-.zsh/.zshrc_secrets
+/nix_secrets
 
+
+# Node modules (should never be tracked)
+node_modules/
+/opencode/node_modules/
 # Pi
 /.pi/agent/auth.json
+/.pi/sandbox/agent/auth.json
 /.pi/agent/sessions/*
 /.pi/agent/pi-undo-redo/blobs/*
 /.pi/agent/run-history.jsonl
+/.pi/sandbox/agent/sessions/*
 
 # Agent-of-empires
 /.agent-of-empires/agent_state.json
@@ -125,9 +137,6 @@ lazygit/state.yml
 # Multica
 /.multica/*
 
-# Tmux
-/.tmux/*
-
 # omp
 /.omp/sessions/*
 /.omp/agent/session*/*
@@ -135,3 +144,7 @@ lazygit/state.yml
 /.omp/agent/history*
 /.omp/agent/models*
 /.omp/agent/terminal*/*
+/.omp/agent/memories/*
+
+# Tmux
+/.tmux/*

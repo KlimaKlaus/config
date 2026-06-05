@@ -1,0 +1,116 @@
+{ config, pkgs, ... }:
+
+{
+  # ──────────────────────────────────────────────────────────────
+  # Zsh
+  # ──────────────────────────────────────────────────────────────
+  programs.zsh = {
+    enable = true;
+    syntaxHighlighting.enable = true;
+    autosuggestion.enable = true;
+
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "z" ];
+    };
+
+    initExtraFirst = ''
+      export ZSH="$HOME/.oh-my-zsh"
+    '';
+
+    initExtra = ''
+      # ── Alias-tips plugin (vendored in ~/.zsh/) ────────────
+      if [ -f "''$HOME/.zsh/alias-tips/alias-tips.plugin.zsh" ]; then
+        source "''$HOME/.zsh/alias-tips/alias-tips.plugin.zsh"
+      fi
+
+      # ── Secrets (gitignored, kept on disk) ───────────────────
+      if [ -f "''$HOME/config/nix_secrets" ]; then
+        source "''$HOME/config/nix_secrets"
+      fi
+
+      # ── Local overrides (for quick experiments, no rebuild needed) ──
+      if [ -f "''$HOME/.zshrc_local" ]; then
+        source "''$HOME/.zshrc_local"
+      fi
+
+      # ── Shortcuts ──────────────────────────────────────────────
+      rebuild() { sudo darwin-rebuild switch --flake ~/config && exec zsh; }
+      alias nrs="rebuild"
+      alias nix-search="nix search nixpkgs"
+      nix-which() { local p; p="$(which "$1")"; case "$p" in */nix/store/*|*/.nix-profile/*|*/run/current-system/*) echo "$p  ← Nix" ;; /opt/homebrew/*) echo "$p  ← Brew" ;; *) echo "$p" ;; esac; }
+      nix-update() { nix flake update --flake ~/config && sudo darwin-rebuild switch --flake ~/config && exec zsh; }
+      nix-rollback() { sudo darwin-rebuild --list-generations --flake ~/config; echo "Pick: sudo darwin-rebuild --switch-generation <N> --flake ~/config"; }
+      alias ssh-termux='ssh "''${TERMUX_USER}@''${TERMUX_IP}" -p "''${TERMUX_PORT}"'
+      alias ssh-klaus='ssh "''${KLAUS_USER}@''${KLAUS_IP}"'
+      alias ssh-klaus-dashboard='ssh -N -L 18789:"''${KLAUS_DASHBOARD_PORT}" "''${KLAUS_USER}"@"''${KLAUS_IP}"'
+      alias ssh-ecoray-data='ssh "''${ECORAY_DATA_USER}@''${ECORAY_DATA_IP}"'
+
+      # ── General aliases ──────────────────────────────────────
+      alias lg="lazygit"
+      alias gup="git pull --rebase"
+      alias agent="ollama launch claude --model qwen2.5-coder"
+      alias hermes-subprocess="ps aux | grep hermes | grep -v grep"
+
+      # ── Local binary aliases (not Nix-packaged) ──────────────
+      # ── Local binary aliases (not Nix-packaged, optional) ─────
+      if [ -x "''$HOME/Desktop/code/yt-dlp/yt-dlp" ]; then
+        alias yt-dlp="''$HOME/Desktop/code/yt-dlp/yt-dlp -x --audio-format mp3 --audio-quality 0 --embed-thumbnail --add-metadata --no-abort-on-error -o './playlist/%(playlist_index)s - %(title)s.%(ext)s'"
+      fi
+      if [ -x "''$HOME/Desktop/code/repolicense-cli/zig-out/bin/repolicense" ]; then
+        alias repolicense="''$HOME/Desktop/code/repolicense-cli/zig-out/bin/repolicense"
+      fi
+
+      # ── PATH additions ───────────────────────────────────────
+      export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:''$PATH"
+      export PATH="''$HOME/.cargo/bin:''$PATH"
+      export PATH="''$HOME/.dotnet/tools:''$PATH"
+      export PATH="''$HOME/.local/bin:''$PATH"
+
+      # ── SDKMAN (needs manual decision) ───────────────────────
+      # export SDKMAN_DIR="''$HOME/.sdkman"
+      # [[ -s "''$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "''$HOME/.sdkman/bin/sdkman-init.sh"
+
+      # ── Anaconda (needs manual decision) ─────────────────────
+      # export PATH=/usr/local/anaconda3/bin:''$PATH
+
+      # ── Mole shell completion ────────────────────────────────
+      if output="''$(mole completion zsh 2>/dev/null)"; then eval "''$output"; fi
+      # ── Opencode completions ─────────────────────────────────
+      ###-begin-opencode-completions-###
+      _opencode_yargs_completions()
+      {
+        local reply
+        local si=''$IFS
+        IFS=''$'\n' reply=(''$(COMP_CWORD="''$((CURRENT-1))" COMP_LINE="''$BUFFER" COMP_POINT="''$CURSOR" opencode --get-yargs-completions "''${words[@]}"))
+        IFS=''$si
+        if [[ ''${#reply} -gt 0 ]]; then
+          _describe 'values' reply
+        else
+          _default
+        fi
+      }
+      if [[ "''${zsh_eval_context[-1]}" == "loadautofunc" ]]; then
+        _opencode_yargs_completions "''$@"
+      else
+        compdef _opencode_yargs_completions opencode
+      fi
+      ###-end-opencode-completions-###
+
+      # ── Time format ─────────────────────────────────────────
+      TIMEFMT=''$'\n================\nCPU\t%P\nuser\t%*U\nsystem\t%*S\ntotal\t%*E'
+
+      # ── Multica env ─────────────────────────────────────────
+      export MULTICA_AGENT_RUNTIME_PROVIDER="docker"
+      export MULTICA_AGENT_DEFAULT_IMAGE="ghcr.io/multica-ai/multica-agent-env:latest"
+    '';
+  };
+
+  # ──────────────────────────────────────────────────────────────
+  # Starship
+  # ──────────────────────────────────────────────────────────────
+  programs.starship = {
+    enable = true;
+    # Config is symlinked via dotfiles.nix
+  };
+}
