@@ -4,10 +4,10 @@ This is a nix-darwin + home-manager configuration repo for macOS (Apple Silicon,
 
 ## Memory & Context
 
-Session context is auto-injected by the vault hook (`~/.omp/agent/hooks/save-to-vault.ts`).
-Recent session notes from `~/vault/projects/<org>/<repo>/<branch>/` are loaded at the
-start of every session — no manual instruction needed.
-
+- **Session start:** Recent vault notes are auto-injected by `~/.omp/agent/hooks/post/save-to-vault.sh`.
+- **Session end:** A stub file is auto-created at `~/vault/projects/<org>/<repo>/<branch>/YYYY-MM-DD.md`.
+  Before the session ends, append a summary to that file.
+  Use the `bash` tool to append: `cat >> ~/vault/projects/... << 'EOF'`
 ## Architecture
 
 ```

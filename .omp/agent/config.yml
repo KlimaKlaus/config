@@ -1,4 +1,4 @@
-lastChangelogVersion: 15.9.1
+lastChangelogVersion: 15.10.0
 symbolPreset: nerd
 theme: 
   dark: titanium
@@ -11,4 +11,4 @@ steeringMode: all
 memory: 
   backend: local
 extensions: 
-  - ~/.omp/agent
+  - /Users/lucasfreytorreshanson/.omp/agent
