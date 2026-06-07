@@ -7,6 +7,7 @@
     ./home/git.nix
     ./home/tmux.nix
     ./home/dotfiles.nix
+    ./home/vim.nix
   ];
 
   home = {

@@ -13,9 +13,6 @@
     ".tmux.conf".source = "${flakeDir.outPath}/.tmux.conf";
     # TPM and plugins live in ~/.tmux/plugins/ (gitignored, runtime-managed)
 
-    # ── Vim ─────────────────────────────────────────────────────
-    ".vimrc".source = "${flakeDir.outPath}/.vimrc";
-
     # ── AeroSpace ───────────────────────────────────────────────
     ".aerospace.toml".source = "${flakeDir.outPath}/.aerospace.toml";
   };

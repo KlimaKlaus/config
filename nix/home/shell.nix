@@ -14,11 +14,9 @@
       plugins = [ "git" "z" ];
     };
 
-    initExtraFirst = ''
+    initContent = ''
       export ZSH="$HOME/.oh-my-zsh"
-    '';
 
-    initExtra = ''
       # ── Alias-tips plugin (vendored in ~/.zsh/) ────────────
       if [ -f "''$HOME/.zsh/alias-tips/alias-tips.plugin.zsh" ]; then
         source "''$HOME/.zsh/alias-tips/alias-tips.plugin.zsh"
@@ -41,6 +39,16 @@
       nix-which() { local p; p="$(which "$1")"; case "$p" in */nix/store/*|*/.nix-profile/*|*/run/current-system/*) echo "$p  ← Nix" ;; /opt/homebrew/*) echo "$p  ← Brew" ;; *) echo "$p" ;; esac; }
       nix-update() { nix flake update --flake ~/config && sudo darwin-rebuild switch --flake ~/config && exec zsh; }
       nix-rollback() { sudo darwin-rebuild --list-generations --flake ~/config; echo "Pick: sudo darwin-rebuild --switch-generation <N> --flake ~/config"; }
+
+      # ── OMP wrapper (auto-saves session to vault after exit) ──
+      omp() {
+        command omp "$@"; local rc=$?
+        # Only save if omp actually ran (exit 0) and was a session
+        case "$rc:$1" in
+          0:|0:--resume|0:--continue) ~/.omp/agent/hooks/post/save-to-vault.sh "$(pwd)" 2>/dev/null ;;
+        esac
+        return $rc
+      }
       alias ssh-termux='ssh "''${TERMUX_USER}@''${TERMUX_IP}" -p "''${TERMUX_PORT}"'
       alias ssh-klaus='ssh "''${KLAUS_USER}@''${KLAUS_IP}"'
       alias ssh-klaus-dashboard='ssh -N -L 18789:"''${KLAUS_DASHBOARD_PORT}" "''${KLAUS_USER}"@"''${KLAUS_IP}"'
@@ -62,11 +70,10 @@
       fi
 
       # ── PATH additions ───────────────────────────────────────
-      export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:''$PATH"
+      export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:''$HOME/.bun/bin:''$PATH"
       export PATH="''$HOME/.cargo/bin:''$PATH"
       export PATH="''$HOME/.dotnet/tools:''$PATH"
       export PATH="''$HOME/.local/bin:''$PATH"
-
       # ── SDKMAN (needs manual decision) ───────────────────────
       # export SDKMAN_DIR="''$HOME/.sdkman"
       # [[ -s "''$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "''$HOME/.sdkman/bin/sdkman-init.sh"
