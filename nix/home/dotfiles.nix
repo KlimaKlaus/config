@@ -15,5 +15,8 @@
 
     # ── AeroSpace ───────────────────────────────────────────────
     ".aerospace.toml".source = "${flakeDir.outPath}/.aerospace.toml";
+
+    # ── Sioyek ──────────────────────────────────────────────────
+    "Library/Application Support/sioyek/prefs_user.config".source = "${flakeDir.outPath}/sioyek/prefs_user.config";
   };
 }
