@@ -1,1 +1,3 @@
 promptToReturnFromSubprocess: false
+os:
+  edit: 'vim {{filename}}'
