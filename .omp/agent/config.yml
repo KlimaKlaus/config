@@ -1,14 +1,15 @@
-lastChangelogVersion: 15.10.0
+lastChangelogVersion: 15.10.4
 symbolPreset: nerd
 theme: 
   dark: titanium
   light: light
 setupVersion: 1
 modelRoles: 
-  default: deepseek/deepseek-v4-pro
+  default: deepseek/deepseek-v4-flash
 defaultThinkingLevel: auto
 steeringMode: all
 memory: 
   backend: local
 extensions: 
   - /Users/lucasfreytorreshanson/.omp/agent
+goal.enabled: true
