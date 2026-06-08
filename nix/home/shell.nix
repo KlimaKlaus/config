@@ -53,6 +53,7 @@
       alias ssh-klaus='ssh "''${KLAUS_USER}@''${KLAUS_IP}"'
       alias ssh-klaus-dashboard='ssh -N -L 18789:"''${KLAUS_DASHBOARD_PORT}" "''${KLAUS_USER}"@"''${KLAUS_IP}"'
       alias ssh-ecoray-data='ssh "''${ECORAY_DATA_USER}@''${ECORAY_DATA_IP}"'
+      alias ssh-windows='ssh "''${WINDOWS_USER}@''${WINDOWS_IP}"'
 
       # ── General aliases ──────────────────────────────────────
       alias lg="lazygit"
