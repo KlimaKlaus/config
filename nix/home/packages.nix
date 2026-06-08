@@ -3,9 +3,7 @@
 let
   # ── Node packages installed globally ───────────────────────────
   nodePkgs = with pkgs.nodePackages; [
-    # firebase-tools — was "firebase-cli" in brew
-    # TODO: uncomment if needed; requires node_modules
-    # firebase-tools
+    mcp-server-duckduckgo
   ];
 in
 {
@@ -25,9 +23,12 @@ in
     figlet       # brew "figlet"
 
     # ── Languages & runtimes ────────────────────────────────────
-    python312              # brew "python@3.12"
-    python312Packages.pip  # always handy
-    python312Packages.virtualenv
+    (python312.withPackages (ps: with ps; [
+      pip
+      virtualenv
+      jupyterlab
+      numpy
+    ]))
     nodejs                 # brew "node"
     go                     # brew "go"
     rustc                  # brew "rust"
@@ -42,6 +43,7 @@ in
     bazel                  # brew "bazel"
     scala-cli              # brew "scala-cli" — confirmed in nixpkgs
     typst                  # brew dep — explicit
+    uv                     # brew "uv" (cask)
 
     # ── Data & databases ────────────────────────────────────────
     duckdb       # brew "duckdb"
@@ -72,9 +74,7 @@ in
     # handbrake — marked broken in nixpkgs; kept via homebrew
 
     # ── Data science & Python ───────────────────────────────────
-    python312Packages.jupyterlab  # brew "jupyterlab"
-    python312Packages.numpy  # brew "numpy"
-    # openvino — marked broken in nixpkgs on darwin; kept via homebrew
+    # (Python packages now managed via python312.withPackages above)
 
     # ── macOS applications ──────────────────────────────────────
     # ghostty — Linux-only in nixpkgs; kept via homebrew cask
@@ -83,6 +83,8 @@ in
     zed-editor             # brew "zed" (cask)
     # zen-browser — not in nixpkgs; kept via homebrew
     sioyek                 # brew "sioyek" (cask)
+    # lm studio
+    lmstudio
 
     # ── System tools ────────────────────────────────────────────
     android-tools          # brew "android-platform-tools" (cask)
