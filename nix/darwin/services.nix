@@ -50,15 +50,17 @@
 
   launchd.user.agents.borders = {
     serviceConfig = {
-      ProgramArguments = [ "${pkgs.jankyborders}/bin/borders" ];
+      ProgramArguments = [
+        "${pkgs.jankyborders}/bin/borders"
+        "style=round"
+        "width=6.0"
+        "active_color=0xff74c7ec"
+        "inactive_color=0xff6c7086"
+        "hidpi=on"
+      ];
       KeepAlive = true;
       RunAtLoad = true;
     };
   };
-
-  # Force-restart borders after rebuild so it reads the new bordersrc
-  system.activationScripts.restartBorders.text = ''
-    pkill -f borders 2>/dev/null || true
-  '';
   system.stateVersion = 4;
 }
