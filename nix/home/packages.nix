@@ -83,6 +83,7 @@ in
     zed-editor             # brew "zed" (cask)
     # zen-browser — not in nixpkgs; kept via homebrew
     sioyek                 # brew "sioyek" (cask)
+    jankyborders           # brew "FelixKratz/formulae/borders"
     # lm studio
     lmstudio
 

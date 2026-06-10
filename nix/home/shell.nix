@@ -58,7 +58,6 @@
       # ── General aliases ──────────────────────────────────────
       alias lg="lazygit"
       alias gup="git pull --rebase"
-      alias agent="ollama launch claude --model qwen2.5-coder"
       alias hermes-subprocess="ps aux | grep hermes | grep -v grep"
 
       # ── Local binary aliases (not Nix-packaged) ──────────────

@@ -48,5 +48,17 @@
     # };
   };
 
+  launchd.user.agents.borders = {
+    serviceConfig = {
+      ProgramArguments = [ "${pkgs.jankyborders}/bin/borders" ];
+      KeepAlive = true;
+      RunAtLoad = true;
+    };
+  };
+
+  # Force-restart borders after rebuild so it reads the new bordersrc
+  system.activationScripts.restartBorders.text = ''
+    pkill -f borders 2>/dev/null || true
+  '';
   system.stateVersion = 4;
 }

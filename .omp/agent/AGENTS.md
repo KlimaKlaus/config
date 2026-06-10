@@ -1,1 +1,3 @@
-/Users/lucasfreytorreshanson/vault/AGENTS.md
+# AGENTS
+
+Read `~/vault/AGENTS.md`

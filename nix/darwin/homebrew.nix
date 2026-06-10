@@ -43,6 +43,7 @@
       "remindctl"
       "sdkman-cli"
       "tmux"                 # dep of aoe
+      "apfel"
     ];
 
     casks = [
