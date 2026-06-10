@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# JankyBorders config — sourced by `borders` when started without arguments
+# See `man borders` or https://github.com/FelixKratz/JankyBorders
+
+borders \
+  active_color=0xff74c7ec \
+  inactive_color=0xffcba6f7 \
+  width=6.0 \
+  hidpi=on
