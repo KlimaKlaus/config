@@ -36,7 +36,7 @@ Open a **new terminal** (or `exec zsh`) once after first setup for these to load
   nix/darwin/
     homebrew.nix           # brew packages
     system.nix             # macos settings (dock, finder, trackpad)
-    services.nix           # hostname, user, daemon
+    services.nix           # hostname, user, daemon, borders config
 ```
 
 ## How to...
@@ -49,6 +49,7 @@ Open a **new terminal** (or `exec zsh`) once after first setup for these to load
 | Add shell alias (quick test) | `echo 'alias ...' >> ~/.zshrc_local` | `exec zsh` |
 | Change dotfile | Edit the file directly | `nrs` |
 | Change macOS settings | Edit `nix/darwin/system.nix` | `nrs` |
+| Change borders colors | Edit `ProgramArguments` in `nix/darwin/services.nix` | `nrs` |
 | Change git config | Edit `nix/home/git.nix` | `nrs` |
 
 ## New machine setup
