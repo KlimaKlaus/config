@@ -9,7 +9,6 @@
     ".config/ghostty/config".source = "${flakeDir.outPath}/config.ghostty";
     ".config/lazygit/config.yml".source = "${flakeDir.outPath}/lazygit/config.yml";
 
-    ".config/borders/bordersrc".source = "${flakeDir.outPath}/borders/bordersrc";
     # ── Tmux ────────────────────────────────────────────────────
     ".tmux.conf".source = "${flakeDir.outPath}/.tmux.conf";
     # TPM and plugins live in ~/.tmux/plugins/ (gitignored, runtime-managed)

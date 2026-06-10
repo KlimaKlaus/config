@@ -53,9 +53,9 @@
       ProgramArguments = [
         "${pkgs.jankyborders}/bin/borders"
         "style=round"
-        "width=6.0"
+        "width=8.0"
         "active_color=0xff74c7ec"
-        "inactive_color=0xff6c7086"
+        "inactive_color=0xffcba6f7"
         "hidpi=on"
       ];
       KeepAlive = true;
