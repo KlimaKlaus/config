@@ -7,6 +7,7 @@ modelRoles:
   default: deepseek/deepseek-v4-pro
   plan: deepseek/deepseek-v4-pro
   task: deepseek/deepseek-v4-flash:low
+  vision: lm-studio/huihui-gemma-4-e4b-it-abliterated-mlx@4bit:off
 defaultThinkingLevel: auto
 steeringMode: all
 memory: 
