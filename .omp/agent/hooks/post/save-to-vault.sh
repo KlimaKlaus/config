@@ -1,8 +1,11 @@
 #!/bin/bash
 set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VAULT="$HOME/vault"
 PROJECTS="$VAULT/projects"
 WORKDIR="${1:-$(pwd)}"
+# Separate prompt text keeps the shell flow readable.
+PROMPT_FILE="$SCRIPT_DIR/save-to-vault.prompt.md"
 
 # ── Detect project ──────────────────────────────────────────
 BRANCH=$(git -C "$WORKDIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "main")
@@ -55,6 +58,8 @@ with open('$LATEST_JSONL') as f:
 
 # ── Summarize via DeepSeek ──────────────────────────────────
 SUMMARY=""
+SUMMARY_DATA='{"summary":"","wins":[],"corrections":[]}'
+TAG_DATA='[]'
 CONVO=$(python3 -c "
 import json
 with open('$LATEST_JSONL') as f:
@@ -75,17 +80,81 @@ if [ -n "$CONVO" ]; then
   DS_KEY=$(sqlite3 "$HOME/.omp/agent/agent.db" \
     "SELECT json_extract(data, '$.key') FROM auth_credentials WHERE provider='deepseek' LIMIT 1;" 2>/dev/null || echo "")
   if [ -n "$DS_KEY" ]; then
-    SUMMARY=$(python3 -c "
+    if [ -r "$PROMPT_FILE" ]; then
+      SUMMARY_PROMPT=$(cat "$PROMPT_FILE")
+    else
+      SUMMARY_PROMPT='Return valid JSON with summary, wins, corrections, and tags.'
+    fi
+
+    SUMMARY_RAW=$(python3 -c "
+import json, sys
+convo = sys.stdin.read()
+prompt = sys.argv[1]
+payload = json.dumps({
+  'model': 'deepseek-chat',
+  'messages': [
+    {'role': 'system', 'content': prompt},
+    {'role': 'user', 'content': convo}
+  ],
+  'max_tokens': 400,
+  'temperature': 0.3
+})
+print(payload)
+" "$SUMMARY_PROMPT" <<< "$CONVO" 2>/dev/null | curl -s https://api.deepseek.com/v1/chat/completions \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $DS_KEY" \
+      -d @- 2>/dev/null | python3 -c "
+import json, sys
+try:
+    d = json.load(sys.stdin)
+    print(d['choices'][0]['message']['content'])
+except: pass
+" 2>/dev/null)
+
+    SUMMARY_DATA=$(python3 -c "
+import json, sys
+raw = sys.stdin.read().strip()
+fallback = {'summary': '', 'wins': [], 'corrections': [], 'tags': []}
+
+if not raw:
+  print(json.dumps(fallback, ensure_ascii=False))
+  raise SystemExit(0)
+
+try:
+  data = json.loads(raw)
+except json.JSONDecodeError:
+  fallback['summary'] = raw
+  print(json.dumps(fallback, ensure_ascii=False))
+  raise SystemExit(0)
+
+summary = data.get('summary') or data.get('Summary') or ''
+wins = data.get('wins') or data.get('what_went_well') or []
+corrections = data.get('corrections') or data.get('mistakes') or []
+
+if isinstance(wins, str):
+  wins = [wins]
+if isinstance(corrections, str):
+  corrections = [corrections]
+
+normalized = {
+  'summary': summary.strip(),
+  'wins': [str(item).strip() for item in wins if str(item).strip()],
+  'corrections': [str(item).strip() for item in corrections if str(item).strip()],
+}
+print(json.dumps(normalized, ensure_ascii=False))
+" <<< "$SUMMARY_RAW" 2>/dev/null)
+
+    TAG_RAW=$(python3 -c "
 import json, sys
 convo = sys.stdin.read()
 payload = json.dumps({
-    'model': 'deepseek-chat',
-    'messages': [
-        {'role': 'system', 'content': 'Summarize this coding session in 3-5 bullet points. Focus on: what was done, files changed, decisions made, issues fixed. Be concise.'},
-        {'role': 'user', 'content': convo}
-    ],
-    'max_tokens': 300,
-    'temperature': 0.3
+  'model': 'deepseek-chat',
+  'messages': [
+    {'role': 'system', 'content': 'Return JSON only: {"tags": ["tag-one", "tag-two"]}. Extract 2-7 short lowercase hyphenated tags for the concrete work in the session. Prioritize technologies, tools, and files worked on such as nix, brew, claude, shell, hooks, prompt-refactor, vault-notes. Do not include project or branch names.'},
+    {'role': 'user', 'content': convo}
+  ],
+  'max_tokens': 120,
+  'temperature': 0.1
 })
 print(payload)
 " <<< "$CONVO" 2>/dev/null | curl -s https://api.deepseek.com/v1/chat/completions \
@@ -98,8 +167,66 @@ try:
     print(d['choices'][0]['message']['content'])
 except: pass
 " 2>/dev/null)
+
+    TAG_DATA=$(python3 -c "
+import json, sys
+raw = sys.stdin.read().strip()
+fallback = []
+
+if not raw:
+  print('[]')
+  raise SystemExit(0)
+
+try:
+  data = json.loads(raw)
+except json.JSONDecodeError:
+  print('[]')
+  raise SystemExit(0)
+
+tags = data.get('tags') or data.get('Tags') or []
+if isinstance(tags, str):
+  tags = [tags]
+clean = [str(item).strip() for item in tags if str(item).strip()]
+print(json.dumps(clean, ensure_ascii=False))
+" <<< "$TAG_RAW" 2>/dev/null)
   fi
 fi
+
+NOTE_TAGS=$(PROJECT="$PROJECT" BRANCH="$BRANCH" TAG_DATA="$TAG_DATA" python3 -c "
+import json, os, sys
+tags = [os.environ['PROJECT'], os.environ['BRANCH']]
+extra = json.loads(os.environ.get('TAG_DATA', '[]'))
+for tag in extra:
+  if tag and tag not in tags:
+    tags.append(tag)
+print('tags: [' + ', '.join(json.dumps(tag) for tag in tags) + ']')
+")
+
+SUMMARY_BLOCK=$(python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+lines = []
+
+summary = (data.get('summary') or '').strip()
+if summary:
+  lines.extend(['## Summary', '', summary, ''])
+
+def emit(title, key):
+  items = data.get(key) or []
+  if not items:
+    return
+  lines.extend([f'## {title}', ''])
+  for item in items:
+    text = str(item).strip()
+    if text:
+      lines.append(f'- {text}')
+  lines.append('')
+
+emit('What went well', 'wins')
+emit('Corrections made', 'corrections')
+
+print('\n'.join(lines).rstrip())
+" <<< "$SUMMARY_DATA")
 
 # ── Write vault note ────────────────────────────────────────
 DIR="$PROJECTS/$PROJECT/$BRANCH"
@@ -111,7 +238,7 @@ mkdir -p "$DIR"
   echo "project: $PROJECT"
   echo "branch: $BRANCH"
   echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  echo "tags: [$PROJECT, $BRANCH]"
+  echo "$NOTE_TAGS"
   echo "---"
   echo ""
   echo "# $PROJECT — $BRANCH — $(date "+%Y-%m-%d %H:%M")"
@@ -129,7 +256,10 @@ mkdir -p "$DIR"
     echo ""
   fi
 
-  if [ -n "$SUMMARY" ]; then
+  if [ -n "$SUMMARY_BLOCK" ]; then
+    printf '%s\n' "$SUMMARY_BLOCK"
+    echo ""
+  elif [ -n "$SUMMARY" ]; then
     echo "## Summary"
     echo ""
     echo "$SUMMARY"
