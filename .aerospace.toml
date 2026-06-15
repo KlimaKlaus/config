@@ -297,3 +297,8 @@ shift-down = ['volume set 0', 'mode main']
 [[on-window-detected]]
   if.app-id = 'com.microsoft.teams2'
   run = 'move-node-to-workspace Q'
+
+# Obsidian
+[[on-window-detected]]
+  if.app-id = 'md.obsidian'
+  run = 'move-node-to-workspace N'
