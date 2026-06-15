@@ -148,13 +148,14 @@ print(json.dumps(normalized, ensure_ascii=False))
 import json, sys
 convo = sys.stdin.read()
 payload = json.dumps({
-  'model': 'deepseek-chat',
+  'model': 'deepseek-v4-flash',
   'messages': [
-    {'role': 'system', 'content': 'Return JSON only: {"tags": ["tag-one", "tag-two"]}. Extract 2-7 short lowercase hyphenated tags for the concrete work in the session. Prioritize technologies, tools, and files worked on such as nix, brew, claude, shell, hooks, prompt-refactor, vault-notes. Do not include project or branch names.'},
+    {'role': 'system', 'content': 'Return a JSON object with a "tags" key: an array of 2-7 short lowercase-hyphenated strings. Each tag must describe a concrete technology, tool, file, or action from the session (e.g. nix, brew, ghostty, homebrew-nix, darwin-rebuild, shell-config, vault-hook, prompt-engineering). NEVER include project or branch names. Example: {"tags": ["nix", "homebrew-nix", "ghostty"]}'},
     {'role': 'user', 'content': convo}
   ],
-  'max_tokens': 120,
-  'temperature': 0.1
+  'max_tokens': 500,
+  'temperature': 0.1,
+  'response_format': {'type': 'json_object'}
 })
 print(payload)
 " <<< "$CONVO" 2>/dev/null | curl -s https://api.deepseek.com/v1/chat/completions \
@@ -167,19 +168,19 @@ try:
     print(d['choices'][0]['message']['content'])
 except: pass
 " 2>/dev/null)
-
     TAG_DATA=$(python3 -c "
 import json, sys
 raw = sys.stdin.read().strip()
-fallback = []
 
 if not raw:
+  sys.stderr.write('[vault] tags: flash model returned empty response\n')
   print('[]')
   raise SystemExit(0)
 
 try:
   data = json.loads(raw)
 except json.JSONDecodeError:
+  sys.stderr.write(f'[vault] tags: failed to parse JSON from flash model: {raw[:200]}\n')
   print('[]')
   raise SystemExit(0)
 
@@ -187,6 +188,8 @@ tags = data.get('tags') or data.get('Tags') or []
 if isinstance(tags, str):
   tags = [tags]
 clean = [str(item).strip() for item in tags if str(item).strip()]
+if not clean:
+  sys.stderr.write('[vault] tags: flash model returned no usable tags\n')
 print(json.dumps(clean, ensure_ascii=False))
 " <<< "$TAG_RAW" 2>/dev/null)
   fi
