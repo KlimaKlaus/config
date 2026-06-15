@@ -14,6 +14,7 @@
     taps = [
       "anomalyco/tap"       # opencode
       "homebrew/services"   # brew services (postgres, redis)
+      "nikitabobko/tap"     # aerospace
       "manaflow-ai/cmux"    # cmux (cask)
       "minio/stable"        # minio-warp
       "multica-ai/tap"      # multica
@@ -57,7 +58,6 @@
       "dotnet-sdk"
       "ghostty"
       "gyroflow"
-      "handbrake"
       "handbrake-app"
       "prince"
       "sioyek"
@@ -70,10 +70,20 @@
       "yaak"
       "zed"
       "zen"
-      "zen-browser"
     ];
   };
 
+  # Trust third-party taps so Homebrew doesn't refuse on rebuild.
+  # Must run as the real user — darwin-rebuild runs activation as root.
+  system.activationScripts.brewTrust.text =
+    let
+      user = config.system.primaryUser;
+      taps = config.homebrew.taps;
+    in
+    lib.concatStringsSep "\n" (map (tap: ''
+      /opt/homebrew/bin/brew tap "${tap}" 2>/dev/null || true
+      sudo -u ${user} -H /opt/homebrew/bin/brew trust "${tap}" 2>/dev/null || true
+    '') taps);
   # Brew 5.x: cleanup runs manually after activation
   system.activationScripts.brewCleanup.text = ''
     BREWFILE=$(find /nix/store -maxdepth 1 -name "*-Brewfile" -newer /run/current-system -print -quit 2>/dev/null)

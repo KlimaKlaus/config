@@ -48,6 +48,7 @@ in
     # ── Data & databases ────────────────────────────────────────
     duckdb       # brew "duckdb"
     mosquitto    # brew "mosquitto"
+    juicefs
 
     # ── Cloud & infra ───────────────────────────────────────────
     azure-cli              # brew "azure-cli"
@@ -86,6 +87,7 @@ in
     jankyborders           # brew "FelixKratz/formulae/borders"
     # lm studio
     lmstudio
+    docker
 
     # ── System tools ────────────────────────────────────────────
     android-tools          # brew "android-platform-tools" (cask)
