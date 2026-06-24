@@ -52,12 +52,11 @@
 
 			# Saved within ~/config/nix_secrets
       alias ssh-termux='ssh "''${TERMUX_USER}@''${TERMUX_IP}" -p "''${TERMUX_PORT}"'
-      alias ssh-klaus='ssh "''${KLAUS_USER}@''${KLAUS_IP}"'
-      alias ssh-klaus-dashboard-tailscale='ssh -N -L 18789:"''${KLAUS_DASHBOARD_PORT}" "''${KLAUS_USER}"@"''${KLAUS_IP}"'
-      alias ssh-ecoray-data='ssh "''${ECORAY_DATA_USER}@''${ECORAY_DATA_IP}"'
       alias ssh-windows='ssh "''${WINDOWS_USER}@''${WINDOWS_IP}"'
-      alias ssh-ecoray-linux='ssh "''${ECORAY_LINUX_USER}@''${ECORAY_LINUX_IP}"'
-      alias ssh-klaus-dashboard='ssh -N -L 18789:"''${KLAUS_DASHBOARD_PORT}" "''${KLAUS_USER}"@"''${KLAUS_IP_NT}"'
+      alias ecoray-linux='ssh "''${ECORAY_LINUX_USER}@''${ECORAY_LINUX_IP}"'
+      alias ecoray-vps1='ssh "''${ECORAY_VPS1_USER}@''${ECORAY_VPS1_IP}"'
+      alias ecoray-vps2='ssh "''${ECORAY_VPS2_USER}@''${ECORAY_VPS2_IP}"'
+      alias ecoray-vps3='ssh "''${ECORAY_VPS3_USER}@''${ECORAY_VPS3_IP}"'
 
       # ── General aliases ──────────────────────────────────────
       alias lg="lazygit"
