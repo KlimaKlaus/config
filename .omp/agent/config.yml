@@ -16,3 +16,9 @@ memory:
 extensions: 
   - /Users/lucasfreytorreshanson/.omp/agent
 goal.enabled: true
+statusLine: 
+  separator: powerline-thin
+  sessionAccent: true
+  transparent: true
+display: 
+  shimmer: classic
