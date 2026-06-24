@@ -17,6 +17,11 @@
       };
       init.defaultBranch = "main";
       pull.rebase = true;
+      core.pager = "${pkgs.delta}/bin/delta";
+      diff.colorMoved = "default";
+      interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
+      delta.navigate = true;
+      merge.conflictstyle = "zdiff3";
     };
   };
 

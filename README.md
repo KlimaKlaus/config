@@ -11,6 +11,48 @@ nix-rollback            # list generations, show rollback command
 
 # NOT managed by nrs/nix-update:
 omp update              # update omp (bun global package, not in nixpkgs)
+
+# New CLI tools
+bat <file>               # cat with syntax highlighting and line numbers
+fd <pattern>             # find replacement (fzf auto-uses it for Ctrl+T)
+jq '.' file.json         # JSON processor — pipe curl output through it
+jq '.[] | .name'         # extract fields from JSON arrays
+zi                       # zoxide interactive picker (fzf-powered cd)
+z <dirname>              # jump to frecent directory (replaced z plugin)
+delta                    # wired as git pager — git diff/show/log/blame
+#                        n/N jumps between diff sections, / searches
+
+# direnv — per-project env auto-loading
+echo 'use flake' > .envrc && direnv allow   # auto-load flake on cd
+echo 'use nixpkgs#python312' > .envrc        # auto-load python on cd
+direnv allow                                  # trust a new .envrc
+direnv runs automatically on `cd`. It loads/unloads the env as you move in
+and out of directories. First time with a new `.envrc`, run `direnv allow`.
+
+### Common .envrc patterns
+
+# Project with flake.nix (has devShells.default)
+echo 'use flake' > .envrc
+
+# Project with shell.nix or default.nix
+echo 'use nix' > .envrc
+
+# Quick Python env — no Nix file needed
+echo 'use nixpkgs#python312' > .envrc
+
+# Python with packages
+echo 'use nixpkgs#python312WithPackages(ps: with ps; [ numpy pandas ])' > .envrc
+
+# Node / Go / Rust
+echo 'use nixpkgs#nodejs_22' > .envrc
+echo 'use nixpkgs#go' > .envrc
+echo 'use nixpkgs#rustup' > .envrc
+
+# Multiple tools at once
+echo 'use nixpkgs#nodejs_22 nixpkgs#python312 nixpkgs#postgresql_14' > .envrc
+
+# Apply after creating or changing a .envrc:
+direnv allow
 ```
 
 Open a **new terminal** (or `exec zsh`) once after first setup for these to load.
@@ -98,7 +140,7 @@ sudo chsh -s ~/.nix-profile/bin/zsh $USER
 ### After bootstrap
 
 ```bash
-gpg --import key.asc                       # import GPG key
+**Nix:** git, gh, curl, fzf, direnv, bat, fd, jq, zoxide, delta, starship, lazygit, tmux, python, node, go, rust, zig, ffmpeg, imagemagick, cmake, gcc, pandoc, tesseract, jupyter — all CLI tools.
 gh auth login                              # GitHub CLI
 # Copy ~/.ssh from old machine
 # Copy agent auth files from old machine

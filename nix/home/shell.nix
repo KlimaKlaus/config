@@ -11,10 +11,25 @@
 
     oh-my-zsh = {
       enable = true;
-      plugins = [ "git" "z" ];
+      plugins = [ "git" ];
     };
 
     initContent = ''
+
+      # ── direnv (per-project env auto-loading) ──────────────────
+      if command -v direnv >/dev/null 2>&1; then
+        eval "$(direnv hook zsh)"
+      fi
+
+      # ── zoxide (smarter cd, replaces z plugin) ────────────────
+      if command -v zoxide >/dev/null 2>&1; then
+        eval "$(zoxide init zsh)"
+      fi
+
+      # ── fzf history search (Ctrl+R) ─────────────────────────────
+      if command -v fzf >/dev/null 2>&1; then
+        source "$(fzf-share)/key-bindings.zsh"
+      fi
       export ZSH="$HOME/.oh-my-zsh"
 
       # ── Alias-tips plugin (vendored in ~/.zsh/) ────────────

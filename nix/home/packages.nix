@@ -14,7 +14,12 @@ in
     gh           # brew "gh"
     curl         # brew "curl"
     fzf          # brew "fzf"
-    gnupg        # brew "gnupg"
+    direnv       # per-project env auto-loading
+    bat          # cat with syntax highlighting
+    fd           # find replacement
+    jq           # JSON processor
+    zoxide       # smarter cd (replaces z plugin)
+    delta        # syntax-highlighted git diffs
     ripgrep      # brew dep — explicit
     starship     # brew "starship"
     lazygit      # brew "lazygit"
