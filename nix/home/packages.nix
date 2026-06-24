@@ -88,15 +88,17 @@ in
     # lm studio
     lmstudio
     docker
-
+    spotify
     # ── System tools ────────────────────────────────────────────
     android-tools          # brew "android-platform-tools" (cask)
     # wkhtmltopdf — x86_64-darwin only in nixpkgs; kept via homebrew
     cacert                 # brew "ca-certificates"
 
-    # ── CLI extras from your brew list ──────────────────────────
+    # ── CLI extras ──────────────────────────────────────────────
+    ente-cli               # CLI client for downloading data from Ente
     bitwarden-cli          # brew "bitwarden-cli"
     himalaya               # brew "himalaya"
+
   ];
 
   # ────────────────────────────────────────────────────────────
