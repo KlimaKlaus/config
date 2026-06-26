@@ -7,8 +7,9 @@ modelRoles:
   default: deepseek/deepseek-v4-pro
   plan: deepseek/deepseek-v4-pro
   task: desktop/qwen2.5-coder-14b
-  vision: lm-studio/huihui-gemma-4-e4b-it-abliterated-mlx@4bit:off
+  vision: lm-studio/gemma-4-e2b-it-mlx
   smol: desktop/qwen2.5-coder-14b:off
+  advisor: desktop/qwen2.5-coder-14b
 defaultThinkingLevel: auto
 steeringMode: all
 memory: 

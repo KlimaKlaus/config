@@ -65,19 +65,16 @@ export default function vaultHook(pi: HookAPI): void {
     };
   });
 
-  // Save session note on shutdown
-  pi.on("session_shutdown", async () => {
+  // Shared: create vault stub (idempotent — one per day)
+  const createStub = () => {
     const project = detectProject();
     if (!project) return;
 
     const timestamp = new Date().toISOString();
     const dateStr = timestamp.slice(0, 10);
-
     const dir = join(PROJECTS, project.org, project.repo, project.branch);
     const file = join(dir, `${dateStr}.md`);
-
     if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-
     if (!existsSync(file)) {
       const header = [
         "---",
@@ -92,7 +89,30 @@ export default function vaultHook(pi: HookAPI): void {
       ].join("\n");
       writeFileSync(file, header, "utf-8");
     }
+    pi.log?.(`Vault stub: ${file}`);
+  };
 
-    pi.log?.(`Vault note: ${file}`);
+  // On /new: create stub + summarize the session we're leaving behind
+  pi.on("session_before_switch", async (event) => {
+    if ((event as any).reason !== "new") return;
+    createStub();
+    const script = join(homedir(), ".omp/agent/hooks/post/save-to-vault.sh");
+    if (!existsSync(script)) return;
+    try {
+      execSync(`bash "${script}"`, {
+        cwd: process.env.INIT_CWD ?? process.cwd(),
+        encoding: "utf-8",
+        timeout: 60000,
+        stdio: "pipe",
+      });
+    } catch (e: any) {
+      const msg = e.stderr || e.message || String(e);
+      pi.log?.(`[vault] summarize failed: ${msg.slice(0, 200)}`);
+    }
+  });
+
+  // On shutdown: create stub (post-hook save-to-vault.sh handles summarization)
+  pi.on("session_shutdown", async () => {
+    createStub();
   });
 }
