@@ -22,6 +22,25 @@
     ln -sf ${config.home.path} "$HOME/.nix-profile"
   '';
 
+  # ── Symlink OpenWhispr.app → ~/Applications ──
+  home.activation.installOpenWhispr = lib.hm.dag.entryAfter ["linkGeneration"] ''
+    app_src="${pkgs.callPackage ./packages/openwhispr.nix { }}/Applications/OpenWhispr.app"
+    app_dst="$HOME/Applications/OpenWhispr.app"
+    mkdir -p "$HOME/Applications"
+    chmod -R u+w "$app_dst" 2>/dev/null || true
+    rm -rf "$app_dst"
+    cp -R "$app_src" "$app_dst"
+    chmod -R u+w "$app_dst"
+    # Strip broken signature — Nix extraction invalidated it
+    find "$app_dst" -name _CodeSignature -type d -exec rm -rf {} + 2>/dev/null || true
+    find "$app_dst" -name CodeResources -type f -delete 2>/dev/null || true
+    # Fix epoch timestamps from Nix store
+    find "$app_dst" -exec touch -h {} +
+    # Ad-hoc re-sign so new signature seals current state
+    /usr/bin/codesign --force --deep --sign - "$app_dst"
+    xattr -dr com.apple.quarantine "$app_dst" 2>/dev/null || true
+  '';
+
   programs.home-manager.enable = true;
 
   # Allow unfree packages (slack, etc.)

@@ -55,6 +55,21 @@
       nix-update() { nix flake update --flake ~/config && sudo darwin-rebuild switch --flake ~/config && exec zsh; }
       nix-rollback() { sudo darwin-rebuild --list-generations --flake ~/config; echo "Pick: sudo darwin-rebuild --switch-generation <N> --flake ~/config"; }
 
+      # ── Batch HEIC → TIFF conversion ─────────────────────────
+      heic2tiff() {
+        if [ $# -eq 0 ]; then
+          echo "Usage: heic2tiff <file.heic> [file2.HEIC ...]"
+          return 1
+        fi
+        local in out
+        for in in "$@"; do
+          out="''${in%.*}.tiff"
+          echo "→ ''${out}"
+          sips -s format tiff "$in" --out "$out"
+        done
+        echo "Done."
+      }
+
       # ── OMP wrapper (auto-saves session to vault after exit) ──
       omp() {
         command omp "$@"; local rc=$?

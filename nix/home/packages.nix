@@ -26,6 +26,7 @@ in
     tmux         # brew dep — explicit
     tree         # diagnostic
     figlet       # brew "figlet"
+    libheif
 
     # ── Languages & runtimes ────────────────────────────────────
     (python312.withPackages (ps: with ps; [
@@ -84,7 +85,7 @@ in
 
     # ── macOS applications ──────────────────────────────────────
     # ghostty — Linux-only in nixpkgs; kept via homebrew cask
-    aerospace              # brew "aerospace" (cask)
+    aerospace
     slack                  # brew "slack" (cask)
     zed-editor             # brew "zed" (cask)
     # zen-browser — not in nixpkgs; kept via homebrew
@@ -94,6 +95,7 @@ in
     lmstudio
     docker
     spotify
+    (pkgs.callPackage ../packages/openwhispr.nix { })
     # ── System tools ────────────────────────────────────────────
     android-tools          # brew "android-platform-tools" (cask)
     # wkhtmltopdf — x86_64-darwin only in nixpkgs; kept via homebrew
@@ -110,7 +112,7 @@ in
   # Packages NOT in nixpkgs — keep via Homebrew (see darwin/homebrew.nix)
   # ────────────────────────────────────────────────────────────
   # opencode, multica, claude-code, cmux, copilot-cli,
-  # gyroflow, prince, slimhud, syntax-highlight, typewhisper,
+  # gyroflow, prince, slimhud, syntax-highlight,
   # wave, yaak, betterdisplay, nightlight, minio-warp, mole,
   # firebase-cli, parquet-cli, apache-spark
 }

@@ -14,14 +14,12 @@
     taps = [
       "anomalyco/tap"       # opencode
       "homebrew/services"   # brew services (postgres, redis)
-      "nikitabobko/tap"     # aerospace
       "manaflow-ai/cmux"    # cmux (cask)
       "minio/stable"        # minio-warp
       "multica-ai/tap"      # multica
       "sdkman/tap"          # sdkman-cli
       "smudge/smudge"       # nightlight
       "steipete/tap"        # remindctl
-      "typewhisper/tap"     # typewhisper (cask)
     ];
 
     brews = [
@@ -49,7 +47,6 @@
 
     casks = [
       "adoptopenjdk"
-      "aerospace"
       "android-platform-tools"
       "betterdisplay"
       "claude-code@latest"
@@ -64,7 +61,6 @@
       "visual-studio-code"
       "slack"
       "syntax-highlight"
-      "typewhisper"
       "wave"
       "wkhtmltopdf"
       "yaak"
