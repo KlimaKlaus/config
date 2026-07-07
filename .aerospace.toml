@@ -64,11 +64,6 @@ outer.bottom =     7
 outer.top =        7
 outer.right =      7
 
-[workspace-to-monitor-force-assignment]
-d = 1
-1 = 2
-p = 3
-t = 3
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -313,3 +308,8 @@ shift-down = ['volume set 0', 'mode main']
 [[on-window-detected]]
   if.app-id = 'md.obsidian'
   run = 'move-node-to-workspace N'
+
+# LM Studio
+[[on-window-detected]]
+  if.app-id = 'ai.elementlabs.lmstudio'
+  run = 'move-node-to-workspace Z'
