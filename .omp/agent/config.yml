@@ -6,10 +6,10 @@ setupVersion: 1
 modelRoles: 
   default: deepseek/deepseek-v4-pro
   plan: deepseek/deepseek-v4-pro
-  task: desktop/qwen2.5-coder-14b
+  task: deepseek/deepseek-v4-flash
   vision: lm-studio/gemma-4-e2b-it-mlx
-  smol: desktop/qwen2.5-coder-14b:off
-  advisor: desktop/qwen2.5-coder-14b
+  smol: deepseek/deepseek-v4-flash
+  advisor: opencode-zen/nemotron-3-ultra-free
 defaultThinkingLevel: auto
 steeringMode: all
 memory: 
