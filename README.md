@@ -3,7 +3,8 @@
 ## Commands
 
 ```bash
-nrs                     # rebuild everything + reload shell
+nrs                     # rebuild everything + reload shell (current window)
+                        # other windows: omz reload
 nix-search <name>       # find a package in nixpkgs
 nix-which <tool>        # check which version (shows Nix vs Brew)
 nix-update              # update all packages to latest
