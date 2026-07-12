@@ -87,6 +87,7 @@
       alias ecoray-vps1='ssh "''${ECORAY_VPS1_USER}@''${ECORAY_VPS1_IP}"'
       alias ecoray-vps2='ssh "''${ECORAY_VPS2_USER}@''${ECORAY_VPS2_IP}"'
       alias ecoray-vps3='ssh "''${ECORAY_VPS3_USER}@''${ECORAY_VPS3_IP}"'
+      alias ecoray-mac-mini='ssh "''${ECORAY_MAC_MINI_USER}@''${ECORAY_MAC_MINI_IP}"'
 
       # ── General aliases ──────────────────────────────────────
       alias lg="lazygit"
