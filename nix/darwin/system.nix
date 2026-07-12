@@ -32,12 +32,18 @@
       minimize-to-application = true;
       magnification = true;
       persistent-apps = [
-        # TODO: add pinned apps, e.g.
-        # "/System/Applications/System Settings.app"
-        # "/Applications/Ghostty.app"
+        "/System/Applications/System Settings.app"
+        "/Applications/Ghostty.app"
+        "/Applications/Zed.app"
+        "/Applications/Visual Studio Code.app"
+        "/Applications/Obsidian.app"
+        "/Applications/Notion.app"
+        "/Applications/Signal.app"
+        "/Applications/Discord.app"
+        "/Applications/Spotify.app"
       ];
       persistent-others = [
-        # TODO: e.g. { path = "~/Downloads"; }
+        "/Users/lucasfreytorreshanson/Downloads"
       ];
     };
 
@@ -56,10 +62,11 @@
 
     trackpad = {
       Clicking = true;
+      TrackpadThreeFingerDrag = true;
     };
-
     screencapture = {
       disable-shadow = true;
+      location = "/Users/lucasfreytorreshanson/Desktop/screenshots";
     };
 
     loginwindow = {
@@ -69,16 +76,42 @@
 
   # ── Apply extra macOS defaults not covered by nix-darwin ──────
   system.activationScripts.extra.text = ''
-    # Three-finger drag
-    defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
-    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+    # Use function keys as standard function keys (F1-F12)
+    defaults write -g com.apple.keyboard.fnState -bool true
+
+    # Trackpad speed (0=slow, 3=fast)
+    defaults write -g com.apple.trackpad.scaling -float 2.5
+
+    # Auto-hide menu bar
+    defaults write -g _HIHideMenuBar -bool true
+
+    # Disable click-wallpaper-to-show-desktop (conflicts with Stage Manager)
+    defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+    # Disable "reopen windows when logging back in"
+    defaults write com.apple.loginwindow TALLogoutSavesState -bool false
+
+    # Show hidden files in Finder
+    defaults write com.apple.finder AppleShowAllFiles -bool true
+
+    # Expand save panel by default
+    defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+
+    # Disable press-and-hold for keys (enable key repeat)
+    defaults write -g ApplePressAndHoldEnabled -bool false
 
     # Hot corners:
     #  0 = nothing, 2 = Mission Control, 3 = App Windows,
     #  4 = Desktop, 5 = Screensaver, 6 = Sleep, 7 = Notifications
-    # defaults write com.apple.dock wvous-tl-corner -int 2   # Top-left → Mission Control
-    # defaults write com.apple.dock wvous-tl-modifier -int 0
-    # defaults write com.apple.dock wvous-br-corner -int 4   # Bottom-right → Desktop
-    # defaults write com.apple.dock wvous-br-modifier -int 0
+    defaults write com.apple.dock wvous-tl-corner -int 2   # Top-left → Mission Control
+    defaults write com.apple.dock wvous-tl-modifier -int 0
+    defaults write com.apple.dock wvous-br-corner -int 4   # Bottom-right → Desktop
+    defaults write com.apple.dock wvous-br-modifier -int 0
+
+    # Disable automatic rearranging of Spaces
+    defaults write com.apple.dock mru-spaces -bool false
+
+    # Save screenshots as PNG
+    defaults write com.apple.screencapture type -string "png"
   '';
 }

@@ -1,0 +1,55 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+	"project_panel": {
+		"dock": "right",
+	},
+	"outline_panel": {
+		"dock": "left",
+	},
+	"collaboration_panel": {
+		"dock": "left",
+	},
+	"git_panel": {
+		"dock": "left",
+	},
+	"cli_default_open_behavior": "new_window",
+	"icon_theme": {
+		"mode": "dark",
+		"light": "Catppuccin Latte",
+		"dark": "Catppuccin Macchiato",
+	},
+	"agent": {
+		"dock": "right",
+		"default_model": {
+			"provider": "copilot_chat",
+			"model": "oswe-vscode-prime",
+		},
+		"model_parameters": [],
+	},
+	"base_keymap": "VSCode",
+	"theme": {
+		"mode": "dark",
+		"light": "One Light",
+		"dark": "Catppuccin Macchiato",
+	},
+	"ui_font_size": 15,
+	"buffer_font_size": 12.5,
+	"autosave": "on_focus_change",
+	"format_on_save": "on",
+	"hard_tabs": true,
+	"remove_trailing_whitespace_on_save": true,
+	"ensure_final_newline_on_save": true,
+	"buffer_font_family": "JetBrains Mono",
+	"telemetry": {
+		"diagnostics": false,
+		"metrics": false,
+	},
+	"tab_size": 2,
+}
