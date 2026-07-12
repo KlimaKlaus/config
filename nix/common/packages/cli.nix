@@ -1,0 +1,23 @@
+{ config, pkgs, ... }:
+
+{
+  home.packages = with pkgs; [
+    git
+    gh
+    curl
+    fzf
+    direnv
+    bat
+    fd
+    jq
+    zoxide
+    delta
+    ripgrep
+    starship
+    lazygit
+    tmux
+    tree
+    figlet
+    libheif
+  ];
+}

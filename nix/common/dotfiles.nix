@@ -5,8 +5,14 @@
 
     # ── Vault (Obsidian memory — separate git repo) ─────────────
     "vault".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/loki-obsidian-memory";
+
+    # ── Starship ─────────────────────────────────────────────────
     ".config/starship.toml".source = "${flakeDir.outPath}/starship.toml";
+
+    # ── Ghostty ──────────────────────────────────────────────────
     ".config/ghostty/config".source = "${flakeDir.outPath}/config.ghostty";
+
+    # ── LazyGit ──────────────────────────────────────────────────
     ".config/lazygit/config.yml".source = "${flakeDir.outPath}/lazygit/config.yml";
 
     # ── Tmux ────────────────────────────────────────────────────
@@ -16,7 +22,13 @@
     # ── AeroSpace ───────────────────────────────────────────────
     ".aerospace.toml".source = "${flakeDir.outPath}/.aerospace.toml";
 
+    # ── Zed ─────────────────────────────────────────────────────
+    ".config/zed/settings.json".source = "${flakeDir.outPath}/zed/settings.json";
+
     # ── Sioyek ──────────────────────────────────────────────────
     "Library/Application Support/sioyek/prefs_user.config".source = "${flakeDir.outPath}/sioyek/prefs_user.config";
+
+    # ── Raycast scripts ─────────────────────────────────────────
+    "Library/Application Support/com.raycast.macos/Extensions/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
   };
 }

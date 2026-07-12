@@ -2,12 +2,12 @@
 
 {
   imports = [
-    ./home/packages.nix
-    ./home/shell.nix
-    ./home/git.nix
-    ./home/tmux.nix
-    ./home/dotfiles.nix
-    ./home/vim.nix
+    ./common/packages
+    ./common/shell
+    ./common/git.nix
+    ./common/tmux.nix
+    ./common/vim.nix
+    ./common/dotfiles.nix
   ];
 
   home = {

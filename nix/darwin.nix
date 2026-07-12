@@ -3,7 +3,9 @@
 {
   imports = [
     ./darwin/system.nix
+    ./darwin/hostname.nix
+    ./darwin/launchd.nix
     ./darwin/services.nix
-    ./darwin/homebrew.nix
+    ./darwin/homebrew
   ];
 }

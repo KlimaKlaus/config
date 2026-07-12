@@ -1,0 +1,45 @@
+{ config, pkgs, lib }:
+
+{
+  content = ''
+
+    # ── direnv (per-project env auto-loading) ──────────────────
+    if command -v direnv >/dev/null 2>&1; then
+      eval "$(direnv hook zsh)"
+    fi
+
+    # ── zoxide (smarter cd, replaces z plugin) ────────────────
+    if command -v zoxide >/dev/null 2>&1; then
+      eval "$(zoxide init zsh)"
+    fi
+
+    # ── fzf history search (Ctrl+R) ─────────────────────────────
+    if command -v fzf >/dev/null 2>&1; then
+      source "$(fzf-share)/key-bindings.zsh"
+    fi
+    export ZSH="$HOME/.oh-my-zsh"
+
+    # ── Alias-tips plugin (vendored in ~/.zsh/) ────────────
+    if [ -f "$HOME/.zsh/alias-tips/alias-tips.plugin.zsh" ]; then
+      source "$HOME/.zsh/alias-tips/alias-tips.plugin.zsh"
+    fi
+
+    # ── Secrets (gitignored, kept on disk) ───────────────────
+    if [ -f "$HOME/config/nix_secrets" ]; then
+      source "$HOME/config/nix_secrets"
+    fi
+
+    # ── Local overrides (for quick experiments, no rebuild needed) ──
+    if [ -f "$HOME/.zshrc_local" ]; then
+      source "$HOME/.zshrc_local"
+    fi
+
+    # ── Shortcuts ──────────────────────────────────────────────
+    rebuild() { sudo darwin-rebuild switch --flake ~/config && exec zsh; }
+    alias nrs="rebuild"
+    alias nix-search="nix search nixpkgs"
+    nix-which() { local p; p="$(which "$1")"; case "$p" in */nix/store/*|*/.nix-profile/*|*/run/current-system/*) echo "$p  ← Nix" ;; /opt/homebrew/*) echo "$p  ← Brew" ;; *) echo "$p" ;; esac; }
+    nix-update() { nix flake update --flake ~/config && sudo darwin-rebuild switch --flake ~/config && exec zsh; }
+    nix-rollback() { sudo darwin-rebuild --list-generations --flake ~/config; echo "Pick: sudo darwin-rebuild --switch-generation <N> --flake ~/config"; }
+  '';
+}
