@@ -72,15 +72,9 @@ On every rebuild you see:
 
 This is cosmetic. The new `initContent` option requires a different workflow (Nix string instead of shell string). Fix when home-manager removes the old option entirely.
 
-### .pi/node_modules tracked in git
+### .pi/node_modules tracked in git — FIXED 2026-07-12
 
-Due to a historical commit, `~/.config/.pi/node_modules/` is tracked (thousands of files). To fix:
-```bash
-cd ~/config
-git rm -r --cached .pi/node_modules
-git commit -m "Untrack .pi/node_modules"
-```
-(Already gitignored now, just need to remove from git history.)
+Done: `git rm -r --cached .pi/node_modules` on 2026-07-12. No longer tracked.
 
 ## File Layout (current)
 
@@ -96,25 +90,36 @@ git commit -m "Untrack .pi/node_modules"
   config.ghostty            # Terminal
   .aerospace.toml           # Window manager
   .tmux.conf                # Tmux
-  .vimrc                    # Vim
   lazygit/config.yml        # LazyGit
+  zed/settings.json         # Zed editor
+  sioyek/prefs_user.config  # PDF reader
+  raycast-scripts/          # Raycast script extensions
 
   repolicense-cli/          # Git submodule
 
   nix/
-    home.nix                # Home-manager top-level
-    darwin.nix              # Nix-darwin top-level
+    home.nix                # Home-manager entry (imports common/*)
+    darwin.nix              # Nix-darwin entry (imports darwin/*)
     MIGRATION.md            # This file
-    home/
-      packages.nix          # CLI tools from nixpkgs
-      shell.nix             # Zsh, aliases, PATH, shortcuts
+    common/                 # Cross-platform home-manager modules
+      packages/             # Nix packages (cli, languages, data, cloud, media, apps, extras)
+      shell/                # Zsh config (init, aliases, paths, completions, env, starship)
       git.nix               # Git, gh, GPG
       tmux.nix              # Tmux binary
-      dotfiles.nix          # Symlinks for dotfiles
-    darwin/
+      vim.nix               # Vim + Catppuccin theme
+      dotfiles.nix          # Symlinks for all dotfiles
+    darwin/                 # macOS-only nix-darwin modules
       system.nix            # macOS defaults
-      services.nix          # Hostname, user, daemon
-      homebrew.nix          # Brew packages (opencode, ghostty, etc.)
+      hostname.nix          # Hostname, user, Nix daemon, GC
+      launchd.nix           # launchd agents (borders, tailwind cleanup)
+      services.nix          # Nix services stubs (postgres, redis)
+      homebrew/             # Brew management
+        brews.nix           # Brew formulas
+        casks.nix           # Brew casks (GUI apps)
+        mas.nix             # Mac App Store apps
+        activation.nix      # Brew trust + cleanup scripts
+    packages/               # Custom Nix packages
+      openwhispr.nix
 
   # Gitignored (on disk, not in repo):
   nix_secrets               # SSH aliases, API tokens

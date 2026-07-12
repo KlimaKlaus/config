@@ -67,33 +67,42 @@ Open a **new terminal** (or `exec zsh`) once after first setup for these to load
   config.ghostty           # terminal
   .aerospace.toml          # window manager
   .tmux.conf               # tmux
-  .vimrc                   # vim
   lazygit/config.yml       # lazygit
+  zed/settings.json        # zed editor
 
-  nix/home/
-    shell.nix              # zsh config, aliases, PATH
-    packages.nix           # CLI tools from nixpkgs
-    git.nix                # git, gh, gpg
-    dotfiles.nix           # symlinks for dotfiles above
+  nix/common/
+    packages/              # Nix packages (cli, languages, data, cloud, media, apps, extras)
+    shell/                 # zsh config (init, aliases, paths, completions, env)
+    git.nix                # git, gh, GPG
+    tmux.nix               # tmux binary
+    vim.nix                # vim + catppuccin theme
+    dotfiles.nix           # symlinks (starship, ghostty, tmux, zed, sioyek, etc.)
 
   nix/darwin/
-    homebrew.nix           # brew packages
     system.nix             # macos settings (dock, finder, trackpad)
-    services.nix           # hostname, user, daemon, borders config
+    hostname.nix           # hostname, user, nix daemon, GC
+    launchd.nix            # launchd agents (borders, tailwind cleanup)
+    services.nix           # Nix services stubs (postgres, redis)
+    homebrew/
+      brews.nix            # brew formulas
+      casks.nix            # brew casks (GUI apps)
+      mas.nix              # Mac App Store apps
+      activation.nix       # brew trust + cleanup scripts
 ```
 
 ## How to...
-
 | Task | Do this | Then |
 |------|---------|------|
-| Add Nix package | Add to `nix/home/packages.nix` | `nrs` |
-| Add Brew package | Add to `nix/darwin/homebrew.nix` | `nrs` |
-| Add shell alias (permanent) | Add to `nix/home/shell.nix` | `nrs` |
-| Add shell alias (quick test) | `echo 'alias ...' >> ~/.zshrc_local` | `exec zsh` |
+| Add Nix package | Add to `nix/common/packages/<category>.nix` | `nrs` |
+| Add Brew formula | Add to `nix/darwin/homebrew/brews.nix` | `nrs` |
+| Add Brew cask (GUI app) | Add to `nix/darwin/homebrew/casks.nix` | `nrs` |
+| Add App Store app | Add to `nix/darwin/homebrew/mas.nix` | `nrs` |
+| Add shell alias | Add to `nix/common/shell/aliases.nix` | `nrs` |
+| Quick alias test | `echo 'alias ...' >> ~/.zshrc_local` | `exec zsh` |
 | Change dotfile | Edit the file directly | `nrs` |
 | Change macOS settings | Edit `nix/darwin/system.nix` | `nrs` |
-| Change borders colors | Edit `ProgramArguments` in `nix/darwin/services.nix` | `nrs` |
-| Change git config | Edit `nix/home/git.nix` | `nrs` |
+| Change borders colors | Edit `nix/darwin/launchd.nix` | `nrs` |
+| Change git config | Edit `nix/common/git.nix` | `nrs` |
 
 ## New machine setup
 
@@ -122,10 +131,8 @@ sudo launchctl kickstart -k system/org.nixos.nix-daemon
 
 # 4. Clone
 git clone git@github.com:lucasfth/config.git ~/config
-cd ~/config
-
 # 5. Edit machine-specific settings BEFORE first build:
-#    - nix/darwin/services.nix: change hostName and username
+#    - nix/darwin/hostname.nix: change hostName and username
 #    - flake.nix: change darwinConfigurations key and username variable
 #    - nix/home.nix: change username and homeDirectory
 touch nix_secrets                          # create (copy from old machine)
@@ -141,7 +148,6 @@ sudo chsh -s ~/.nix-profile/bin/zsh $USER
 ### After bootstrap
 
 ```bash
-**Nix:** git, gh, curl, fzf, direnv, bat, fd, jq, zoxide, delta, starship, lazygit, tmux, python, node, go, rust, zig, ffmpeg, imagemagick, cmake, gcc, pandoc, tesseract, jupyter — all CLI tools.
 gh auth login                              # GitHub CLI
 # Copy ~/.ssh from old machine
 # Copy agent auth files from old machine
@@ -149,18 +155,34 @@ brew services start postgresql@14          # if using postgres
 brew services start redis                  # if using redis
 ```
 
+## Raycast config
+
+Raycast preferences are configured through the app UI (not Nix-managed).
+To back up your settings, export them and commit the snapshot:
+
+```bash
+raycast export --output ~/config/Raycast-$(date +%Y-%m-%d).rayconfig
+git add *.rayconfig && git commit -m "backup: raycast settings"
+```
+
+Custom scripts (like `invert-scroll.applescript`) live in `raycast-scripts/`
+and are symlinked into Raycast's extensions folder by `common/dotfiles.nix`.
+
 ## What's gitignored (never pushed)
 
 `nix_secrets`, `.claude/.credentials.json`, `.claude/anthropic_key.sh`, `.omp/agent/*.db*`, `node_modules/`, `result`, `/Code/User/profiles/`
 
 ## Brew vs Nix
 
-**Nix:** git, gh, curl, fzf, starship, lazygit, tmux, python, node, go, rust, zig, ffmpeg, imagemagick, cmake, gcc, pandoc, tesseract, jupyter — all CLI tools.
+**Nix:** CLI tools — git, gh, curl, fzf, bat, fd, jq, zoxide, delta, ripgrep, python, node, go, rust, zig, ffmpeg, imagemagick, pandoc, tesseract, cmake, gcc, and ~70 more. See `nix/common/packages/`.
 
-**Brew:** opencode, multica, claude-code, cmux, ghostty, betterdisplay, postgresql, redis — things not in nixpkgs or GUI apps.
+**Brew (formulas):** Tools not in nixpkgs — opencode, multica, claude-code, cmux, minio-warp, mole, nightlight, and others. See `nix/darwin/homebrew/brews.nix`.
+
+**Brew (casks):** GUI apps — ghostty, zed, vscode, discord, signal, slack, telegram, obsidian, notion, bitwarden, raycast, google-chrome, zen, betterdisplay, and ~20 more. See `nix/darwin/homebrew/casks.nix`.
+
+**Brew services:** postgresql@14, redis — not yet migrated to Nix services.
 
 ## Caveats
 
-- `tmux` from brew (dep of `aoe`), same version as Nix — no impact
+- `nix/darwin/hostname.nix` has machine-specific hostname/username — change for new machines
 - Postgres/Redis are still brew services, not Nix services
-- `nix/darwin/services.nix` has machine-specific hostname/username — change for new machines
