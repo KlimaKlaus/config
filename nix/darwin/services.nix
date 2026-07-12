@@ -62,5 +62,32 @@
       RunAtLoad = true;
     };
   };
+
+  # Clean up leaked Tailwind CSS v4 oxide-helper processes
+  # Known bug: tailwindcss-language-server spawns oxide-helper workers
+  # that accumulate over time and never terminate (~25 MB each).
+  # If >20 are detected, kill the parent LSP; Zed restarts it cleanly.
+  launchd.user.agents.tailwind-cleanup = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.bash}/bin/bash"
+        "-c"
+        ''
+          count=$(pgrep -c -f oxide-helper.js 2>/dev/null || echo 0)
+          if [ "$count" -gt 20 ]; then
+            parent=$(pgrep -f tailwindcss-language-server 2>/dev/null | head -1)
+            if [ -n "$parent" ]; then
+              kill "$parent" 2>/dev/null
+              logger -t tailwind-cleanup "Killed tailwindcss-language-server (PID $parent) — $count oxide-helper workers leaked"
+            fi
+          fi
+        ''
+      ];
+      StartInterval = 1800;
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/tailwind-cleanup.out";
+      StandardErrorPath = "/tmp/tailwind-cleanup.err";
+    };
+  };
   system.stateVersion = 4;
 }
