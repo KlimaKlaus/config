@@ -28,7 +28,11 @@
     # ── Sioyek ──────────────────────────────────────────────────
     "Library/Application Support/sioyek/prefs_user.config".source = "${flakeDir.outPath}/sioyek/prefs_user.config";
 
-    # ── Raycast scripts ─────────────────────────────────────────
+    # ── Raycast Script Commands ───────────────────────────────────
+    ".local/share/raycast-scripts/ask-huginn.sh".source = "${flakeDir.outPath}/raycast-scripts/ask-huginn.sh";
+    ".local/share/raycast-scripts/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
+
+    # ── Raycast (v1 extensions dir) ───────────────────────────────
     "Library/Application Support/com.raycast.macos/Extensions/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
-  };
+
 }
