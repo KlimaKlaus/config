@@ -7,10 +7,16 @@
     alias ssh-termux='ssh "$TERMUX_USER@$TERMUX_IP" -p "$TERMUX_PORT"'
     alias ssh-windows='ssh "$WINDOWS_USER@$WINDOWS_IP"'
     alias ecoray-linux='ssh "$ECORAY_LINUX_USER@$ECORAY_LINUX_IP"'
+    alias sel='ecoray-linux'
     alias ecoray-vps1='ssh "$ECORAY_VPS1_USER@$ECORAY_VPS1_IP"'
+    alias se1='ecoray-vps1'
+    alias se1lv='ssh -t "$ECORAY_VPS1_USER@$ECORAY_VPS1_IP" "cd .openclaw/workspace-louise && exec \$SHELL --login"'
     alias ecoray-vps2='ssh "$ECORAY_VPS2_USER@$ECORAY_VPS2_IP"'
+    alias se2='ecoray-vps2'
     alias ecoray-vps3='ssh "$ECORAY_VPS3_USER@$ECORAY_VPS3_IP"'
+    alias se3='ecoray-vps3'
     alias ecoray-mac-mini='ssh "$ECORAY_MAC_MINI_USER@$ECORAY_MAC_MINI_IP"'
+    alias sem='ecoray-mac-mini'
 
     # ── General aliases ──────────────────────────────────────
     alias lg="lazygit"
