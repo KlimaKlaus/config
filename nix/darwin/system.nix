@@ -31,17 +31,6 @@
       show-recents = false;
       minimize-to-application = true;
       magnification = true;
-      persistent-apps = [
-        "/System/Applications/System Settings.app"
-        "/Applications/Ghostty.app"
-        "/Applications/Zed.app"
-        "/Applications/Visual Studio Code.app"
-        "/Applications/Obsidian.app"
-        "/Applications/Notion.app"
-        "/Applications/Signal.app"
-        "/Applications/Discord.app"
-        "/Applications/Spotify.app"
-      ];
       persistent-others = [
         "/Users/lucasfreytorreshanson/Downloads"
       ];
