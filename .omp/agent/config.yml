@@ -23,3 +23,6 @@ statusLine:
   transparent: true
 display: 
   shimmer: classic
+advisor: 
+  enabled: true
+  syncBacklog: "3"

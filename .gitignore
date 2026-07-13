@@ -146,6 +146,7 @@ node_modules/
 /.omp/agent/terminal*/*
 /.omp/agent/memories/*
 /.omp/agent/blobs/*
+/.omp/agent/cache/*
 
 # Tmux
 /.tmux/*
