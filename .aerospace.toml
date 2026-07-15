@@ -313,3 +313,8 @@ shift-down = ['volume set 0', 'mode main']
 [[on-window-detected]]
   if.app-id = 'ai.elementlabs.lmstudio'
   run = 'move-node-to-workspace Z'
+
+# Yaak
+[[on-window-detected]]
+  if.app-id = 'com.yaak.desktop'
+  run = 'move-node-to-workspace Q'
