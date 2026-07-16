@@ -18,6 +18,8 @@
     alias ecoray-mac-mini='ssh "$ECORAY_MAC_MINI_USER@$ECORAY_MAC_MINI_IP"'
     alias sem='ecoray-mac-mini'
     alias semd='ssh -t "$ECORAY_MAC_MINI_USER@$ECORAY_MAC_MINI_IP" "cd lucasfth/ecoray-web && git checkout development && git pull && exec \$SHELL --login"'
+    alias ecoray-pi='ssh "$ECORAY_PI_USER@$ECORAY_PI_IP"'
+    alias sep='ecoray-pi'
 
     # ── General aliases ──────────────────────────────────────
     alias lg="lazygit"

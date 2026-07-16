@@ -3,8 +3,7 @@
 {
   nixpkgs.config.allowUnfree = true;
 
-  networking.hostName = "lucas-macbook-pro";
-  system.primaryUser = "lucasfreytorreshanson";
+  # hostname + primaryUser are set in flake.nix per-host
 
   # Match the GID from the official Nix installer (350, not 30000)
   ids.gids.nixbld = 350;

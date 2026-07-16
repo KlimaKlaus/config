@@ -10,6 +10,8 @@ modelRoles:
   vision: lm-studio/gemma-4-e2b-it-mlx
   smol: deepseek/deepseek-v4-flash
   advisor: opencode-zen/nemotron-3-ultra-free
+  designer: openai/gpt-5.6-terra
+  tiny: deepseek/deepseek-v4-flash
 defaultThinkingLevel: auto
 steeringMode: all
 memory: 

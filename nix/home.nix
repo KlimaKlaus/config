@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flakeDir, ... }:
+{ config, pkgs, lib, flakeDir, username, hostname, homeDirectory, stateVersion, ... }:
 
 {
   imports = [
@@ -11,9 +11,9 @@
   ];
 
   home = {
-    username = lib.mkForce "lucasfreytorreshanson";
-    homeDirectory = lib.mkForce "/Users/lucasfreytorreshanson";
-    stateVersion = "24.11";
+    username = lib.mkForce username;
+    homeDirectory = lib.mkForce homeDirectory;
+    stateVersion = lib.mkForce stateVersion;
   };
 
   # ── Fix ~/.nix-profile link (new nix CLI vs home-manager mismatch) ──
@@ -22,7 +22,7 @@
     ln -sf ${config.home.path} "$HOME/.nix-profile"
   '';
 
-  # ── Symlink OpenWhispr.app → ~/Applications ──
+  # ── Symlink OpenWhispr.app → ~/Applications (macOS only) ──
   home.activation.installOpenWhispr = lib.hm.dag.entryAfter ["linkGeneration"] ''
     app_src="${pkgs.callPackage ./packages/openwhispr.nix { }}/Applications/OpenWhispr.app"
     app_dst="$HOME/Applications/OpenWhispr.app"

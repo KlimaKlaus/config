@@ -1,5 +1,5 @@
 {
-  description = "lucasfreytorreshanson's macOS Nix configuration";
+  description = "lucasfreytorreshanson's macOS + NixOS configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -13,23 +13,56 @@
     };
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, ... }: let
-    username = "lucasfreytorreshanson";
-    system = "aarch64-darwin";
-  in {
-    darwinConfigurations."lucas-macbook-pro" = darwin.lib.darwinSystem {
-      inherit system;
-      modules = [
-        ./nix/darwin.nix
-        home-manager.darwinModules.home-manager
-        {
-          nixpkgs.config.allowUnfree = true;
-          home-manager.backupFileExtension = "before-nix";
-          home-manager.extraSpecialArgs = { flakeDir = self; };
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./nix/home.nix;
-        }
-      ];
+  outputs = { self, nixpkgs, darwin, home-manager, ... }:
+    let
+      mkHost = path: import path;
+
+      mkDarwin = hostname: let
+        host = mkHost ./nix/hosts/${hostname};
+      in darwin.lib.darwinSystem {
+        inherit (host) system;
+        modules = [
+          ./nix/darwin.nix
+          home-manager.darwinModules.home-manager
+          {
+            networking.hostName = host.hostname;
+            system.primaryUser = host.username;
+            nixpkgs.config.allowUnfree = true;
+            home-manager.backupFileExtension = "before-nix";
+            home-manager.extraSpecialArgs = {
+              flakeDir = self;
+              inherit (host) username hostname homeDirectory stateVersion;
+            };
+            home-manager.useUserPackages = true;
+            home-manager.users.${host.username} = import ./nix/home.nix;
+          }
+        ];
+      };
+
+      mkNixOS = hostname: let
+        host = mkHost ./nix/hosts/${hostname};
+      in nixpkgs.lib.nixosSystem {
+        inherit (host) system;
+        modules = [
+          ./nix/nixos.nix
+          home-manager.nixosModules.home-manager
+          {
+            networking.hostName = host.hostname;
+            nixpkgs.config.allowUnfree = true;
+            home-manager.backupFileExtension = "before-nix";
+            home-manager.extraSpecialArgs = {
+              flakeDir = self;
+              inherit (host) username hostname homeDirectory stateVersion;
+            };
+            home-manager.useUserPackages = true;
+            home-manager.users.${host.username} = import ./nix/home.nix;
+          }
+        ];
+      };
+    in {
+      darwinConfigurations."lucas-macbook-pro" = mkDarwin "lucas-macbook-pro";
+
+      # Uncomment when you have a NixOS machine:
+      # nixosConfigurations."lucas-nixos" = mkNixOS "lucas-nixos";
     };
-  };
 }

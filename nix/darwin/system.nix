@@ -32,7 +32,7 @@
       minimize-to-application = true;
       magnification = true;
       persistent-others = [
-        "/Users/lucasfreytorreshanson/Downloads"
+        "/Users/${config.system.primaryUser}/Downloads"
       ];
     };
 

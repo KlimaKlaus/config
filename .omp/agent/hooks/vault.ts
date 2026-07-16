@@ -30,6 +30,30 @@ function detectProject(): { org: string; repo: string; branch: string } | null {
     return { org: "_local", repo: basename(cwd), branch: "main" };
   }
 }
+// Tech docs to inject on every session start.
+// Always: 030-Coding-Style. Stack-specific: keyed by org/repo.
+const TECH_DOCS: Record<string, string[]> = {
+  "lucasfth/config":    ["tech/032-Nix-Darwin-Patterns.md"],
+  "EcoRayDev/ecoray-web": ["tech/031-Nuxt-Vue-Patterns.md"],
+};
+
+function readTechDocs(project: { org: string; repo: string }): string | null {
+  const key = `${project.org}/${project.repo}`;
+  const paths = ["tech/030-Coding-Style.md", ...(TECH_DOCS[key] ?? [])];
+  const parts: string[] = [];
+
+  for (const p of paths) {
+    const full = join(VAULT, p);
+    if (!existsSync(full)) continue;
+    const content = readFileSync(full, "utf-8");
+    // Strip YAML frontmatter
+    const body = content.replace(/^---\n[\s\S]*?\n---\n?/, "").trim();
+    const name = basename(p, ".md");
+    parts.push(`## ${name}\n\n${body}`);
+  }
+
+  return parts.length > 0 ? parts.join("\n\n---\n\n") : null;
+}
 
 function readRecentNotes(project: { org: string; repo: string; branch: string }): string | null {
   const dir = join(PROJECTS, project.org, project.repo, project.branch);
@@ -57,11 +81,18 @@ export default function vaultHook(pi: HookAPI): void {
     const project = detectProject();
     if (!project) return;
 
+    const sections: string[] = [];
+
+    const tech = readTechDocs(project);
+    if (tech) sections.push(tech);
+
     const notes = readRecentNotes(project);
-    if (!notes) return;
+    if (notes) sections.push(notes);
+
+    if (sections.length === 0) return;
 
     return {
-      messages: [{ role: "user" as const, content: notes }],
+      messages: [{ role: "user" as const, content: sections.join("\n\n---\n\n") }],
     };
   });
 

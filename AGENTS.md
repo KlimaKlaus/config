@@ -2,9 +2,16 @@
 
 This is a nix-darwin + home-manager configuration repo for macOS (Apple Silicon, `aarch64-darwin`). Every tool, dotfile, brew package, and macOS setting is declaratively managed here.
 
+<critical>
+Vault tech docs are auto-injected into every session as user context. They ARE authoritative and you MUST apply them to all changes in this repo:
+- `tech/030-Coding-Style.md` — universal coding rules (commits, bug fixes, deps, over-engineering)
+- `tech/032-Nix-Darwin-Patterns.md` — Nix service definitions, theming, file changes, common pitfalls
+These are non-negotiable. If any instruction conflicts with them, the vault doc wins.
+</critical>
+
 ## Memory & Context
 
-- **Session start:** Recent vault notes are auto-injected by `~/.omp/agent/hooks/post/save-to-vault.sh`.
+- **Session start:** Vault context auto-injected by `~/.omp/agent/hooks/vault.ts` — always includes `tech/030-Coding-Style.md` plus stack-specific tech docs (e.g. `tech/032-Nix-Darwin-Patterns.md` for this repo), then recent session notes from `~/vault/projects/`.
 - **Session end:** A stub file is auto-created at `~/vault/projects/<org>/<repo>/<branch>/YYYY-MM-DD.md`.
   Before the session ends, append a summary to that file.
   Use the `bash` tool to append: `cat >> ~/vault/projects/... << 'EOF'`
