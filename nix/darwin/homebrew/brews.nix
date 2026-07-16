@@ -16,9 +16,10 @@
     "opencode"
     "openvino"
     "parquet-cli"
-    "postgresql@14"
     "python@3.12"
+    "postgresql@14"
     "redis"
+
     "remindctl"
     "sdkman-cli"
     "tmux"                 # dep of aoe

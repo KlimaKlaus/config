@@ -69,15 +69,13 @@ flake.nix (entry) → darwin.lib.darwinSystem
 ## What NOT to do
 
 - **Never** `brew install` — brew is declarative via nix/darwin/homebrew/
-- **Never** edit `~/.zshrc` directly — it's generated from common/shell/, overwritten on rebuild
 - **Never** commit `nix_secrets`, `.claude/.credentials.json`, `node_modules/`
 - **Never** run `darwin-rebuild` without `sudo` after the initial bootstrap
 - **Never** remove `nixpkgs.config.allowUnfree = true` from home.nix (needed for slack)
 
 ## Remaining TODOs (see MIGRATION.md)
 
-- Postgres & Redis: still brew services (not Nix services)
-- SDKMAN & Anaconda: commented out in shell/env.nix
+- Postgres & Redis: deferred — nix-darwin service modules immature (no auto initdb, no redis.conf generation)
 - yt-dlp: manual clone at ~/Desktop/code/, not in Nix
 
 ## Bootstrap (new machine)

@@ -16,9 +16,7 @@
     };
 
     taps = [
-      "anomalyco/tap"       # opencode
       "homebrew/services"   # brew services (postgres, redis)
-      "manaflow-ai/cmux"    # cmux (cask)
       "minio/stable"        # minio-warp
       "multica-ai/tap"      # multica
       "sdkman/tap"          # sdkman-cli

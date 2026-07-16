@@ -5,18 +5,14 @@
   # Nix-managed services (alternative to brew services)
   # ──────────────────────────────────────────────────────────────
   services = {
-    # PostgreSQL — replaces brew services start postgresql@14
-    # Uncomment and migrate data:
-    #   1. pg_dumpall > dump.sql
-    #   2. brew services stop postgresql@14
-    #   3. Uncomment below + rebuild
-    #   4. psql -f dump.sql
+    # PostgreSQL — nix-darwin module needs initdb run manually, config not
+    # auto-generated. Keep on brew services until nix-darwin module matures.
     # postgresql = {
     #   enable = true;
     #   package = pkgs.postgresql_14;
     # };
 
-    # Redis — replaces brew services start redis
+    # Redis — nix-darwin module doesn't generate /etc/redis.conf.
     # redis = { enable = true; };
   };
 }
