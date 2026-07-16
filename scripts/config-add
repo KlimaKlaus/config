@@ -1,0 +1,141 @@
+#!/bin/bash
+set -euo pipefail
+
+CONFIG_DIR="${CONFIG_DIR:-$HOME/config}"
+PKG_DIR="$CONFIG_DIR/nix/common/packages"
+BREWS="$CONFIG_DIR/nix/darwin/homebrew/brews.nix"
+CASKS="$CONFIG_DIR/nix/darwin/homebrew/casks.nix"
+MAS="$CONFIG_DIR/nix/darwin/homebrew/mas.nix"
+ALIASES="$CONFIG_DIR/nix/common/shell/aliases.nix"
+
+# ── Help ───────────────────────────────────────────────────
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  cat <<'EOF'
+Usage: config-add [--cat CATEGORY] <name>
+       config-add --alias <name>=<value>
+       config-add --mas <name> <appstore-id>
+
+Auto-detects nixpkgs → brew formula → brew cask (in that order).
+Override with flags. Edits the right file; run nrs to apply.
+EOF
+  exit 0
+fi
+
+# ── Parse flags ─────────────────────────────────────────────
+CATEGORY=""
+ALIAS_MODE=false
+MAS_MODE=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --cat) CATEGORY="$2"; shift 2 ;;
+    --alias) ALIAS_MODE=true; shift; break ;;
+    --mas) MAS_MODE=true; shift; break ;;
+    --*) echo "Unknown flag: $1" >&2; exit 1 ;;
+    *) break ;;
+  esac
+done
+
+# ── Helper: insert line before last matching pattern ────────
+# Args: file pattern line
+_insert_before() {
+  local file="$1" pattern="$2" line="$3"
+  # macOS sed needs '' after -i, Linux doesn't
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "/${pattern}/i\\
+${line}
+" "$file"
+  else
+    sed -i "/${pattern}/i\\${line}" "$file"
+  fi
+}
+
+# ── Alias mode ──────────────────────────────────────────────
+if $ALIAS_MODE; then
+  ALIAS_LINE="${1:-}"
+  if [[ -z "$ALIAS_LINE" ]]; then
+    echo "Usage: config-add --alias name=value" >&2
+    exit 1
+  fi
+  ALIAS_NAME="${ALIAS_LINE%%=*}"
+  if grep -qF "alias $ALIAS_NAME=" "$ALIASES" 2>/dev/null; then
+    echo "✗ alias '$ALIAS_NAME' already exists in aliases.nix" >&2
+    exit 1
+  fi
+  # Auto-quote values with spaces (shell strips quotes from invocation)
+  ALIAS_VAL="${ALIAS_LINE#*=}"
+  if [[ "$ALIAS_VAL" == *" "* && "$ALIAS_VAL" != \"*\" && "$ALIAS_VAL" != \'*\' ]]; then
+    ALIAS_LINE="${ALIAS_NAME}=\"${ALIAS_VAL}\""
+  fi
+  _insert_before "$ALIASES" "^[[:space:]]*'';$" "    alias $ALIAS_LINE"
+  echo "✓ alias $ALIAS_NAME → $ALIASES"
+  exit 0
+fi
+
+# ── MAS mode ────────────────────────────────────────────────
+if $MAS_MODE; then
+  APP_NAME="${1:-}"; APP_ID="${2:-}"
+  if [[ -z "$APP_NAME" || -z "$APP_ID" ]]; then
+    echo "Usage: config-add --mas <Name> <AppStoreID>" >&2
+    exit 1
+  fi
+  if grep -qF "$APP_NAME" "$MAS" 2>/dev/null; then
+    echo "✗ '$APP_NAME' already in mas.nix" >&2
+    exit 1
+  fi
+  _insert_before "$MAS" "^}" "    $APP_NAME = $APP_ID;"
+  echo "✓ mas $APP_NAME ($APP_ID) → $MAS"
+  exit 0
+fi
+
+# ── Package mode (auto-detect) ──────────────────────────────
+PKG_NAME="${1:-}"
+if [[ -z "$PKG_NAME" ]]; then
+  echo "Usage: config-add [--cat CATEGORY] <package>" >&2
+  exit 1
+fi
+
+# 1. Try nixpkgs
+if nix eval "nixpkgs#${PKG_NAME}.name" &>/dev/null; then
+  CAT="${CATEGORY:-cli}"
+  TARGET="$PKG_DIR/${CAT}.nix"
+  if [[ ! -f "$TARGET" ]]; then
+    echo "✗ category '$CAT' not found (expected $TARGET)" >&2
+    echo "  Categories: $(ls "$PKG_DIR"/*.nix | xargs -n1 basename | sed 's/\.nix//' | tr '\n' ' ')" >&2
+    exit 1
+  fi
+  if grep -qF "$PKG_NAME" "$TARGET" 2>/dev/null; then
+    echo "✗ '$PKG_NAME' already in $TARGET" >&2
+    exit 1
+  fi
+  _insert_before "$TARGET" "^[[:space:]]*];$" "    $PKG_NAME"
+  echo "✓ nix $PKG_NAME → $TARGET (category: $CAT)"
+  exit 0
+fi
+
+# 2. Try brew formula
+if brew info --formula "$PKG_NAME" &>/dev/null; then
+  if grep -qF "\"$PKG_NAME\"" "$BREWS" 2>/dev/null; then
+    echo "✗ '$PKG_NAME' already in brews.nix" >&2
+    exit 1
+  fi
+  _insert_before "$BREWS" "^[[:space:]]*];$" "    \"$PKG_NAME\""
+  echo "✓ brew $PKG_NAME → $BREWS"
+  exit 0
+fi
+
+# 3. Try brew cask
+if brew info --cask "$PKG_NAME" &>/dev/null; then
+  if grep -qF "\"$PKG_NAME\"" "$CASKS" 2>/dev/null; then
+    echo "✗ '$PKG_NAME' already in casks.nix" >&2
+    exit 1
+  fi
+  _insert_before "$CASKS" "^[[:space:]]*];$" "    \"$PKG_NAME\""
+  echo "✓ cask $PKG_NAME → $CASKS"
+  exit 0
+fi
+
+# 4. Not found
+echo "✗ '$PKG_NAME' not found in nixpkgs or homebrew" >&2
+echo "  Try: config-add --cat <category> $PKG_NAME  (if you're sure it's a nix package)" >&2
+exit 1

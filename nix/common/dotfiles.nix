@@ -35,5 +35,8 @@
     # ── Raycast (v1 extensions dir) ───────────────────────────────
     "Library/Application Support/com.raycast.macos/Extensions/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
 
+
+    # ── config-add helper ───────────────────────────────────
+    ".local/bin/config-add".source = "${flakeDir.outPath}/scripts/config-add";
 };
 }
