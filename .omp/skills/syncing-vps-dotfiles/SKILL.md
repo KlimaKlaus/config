@@ -7,7 +7,7 @@ description: Use when the user asks to update, sync, or push their VPS bashrc/vi
 
 ## Overview
 
-Canonical config lives in this Nix repo (`~/config`). Two portable gists are derived from it for Linux VPS use. When the Nix config changes, the gists may need updating.
+Canonical config lives in this Nix repo (`~/config`). Three portable gists are derived from it for Linux VPS / remote machine use. When the Nix config changes, the gists may need updating.
 
 ## Gist → Source Mapping
 
@@ -15,12 +15,13 @@ Canonical config lives in this Nix repo (`~/config`). Two portable gists are der
 |------|----|------------------|
 | `.vimrc` | `881ef84c819f25f5b25ea307df0e0970` | `nix/common/vim.nix` `extraConfig` block |
 | `.bashrc` | `3c0bbabf75b2d17ffd616aae58bd67f7` | `nix/common/shell/aliases.nix`, `nix/common/git.nix` |
+| `.zshrc` | `0dbc9436cd5aebf64bb57d69145d2cf7` | `nix/common/shell/aliases.nix`, `nix/common/git.nix` |
 
 ## Workflow
 
-1. **Read the canonical source** — `nix/common/vim.nix` for vimrc, `nix/common/shell/aliases.nix` + `nix/common/git.nix` for bashrc
+1. **Read the canonical source** — `nix/common/vim.nix` for vimrc, `nix/common/shell/aliases.nix` + `nix/common/git.nix` for bashrc/zshrc
 2. **Read the current gist** — fetch via `read` with the raw URL
-3. **Derive the portable version** — strip Nix wrappers, translate zsh→bash where needed, skip macOS/zsh-specific items
+3. **Derive the portable version** — strip Nix wrappers, translate zsh→bash for bashrc, skip macOS-specific items
 4. **Update the gist** — use `gh gist edit` with the new content
 
 ## Vimrc Translation
@@ -54,7 +55,34 @@ The Nix config is **zsh**. The bashrc gist is **bash 3.2+**. Filter aggressively
 ### Judgment calls
 - Git `delta` pager: gist already omits it (delta unlikely on VPS). Keep omitted.
 - `lg` (lazygit): already in gist with fallback. Keep.
-- Starship prompt: gist uses a hand-rolled PS1 instead. Keep the hand-rolled PS1.
+
+## Zshrc Translation
+
+The zshrc gist is **zsh** (same as the Nix config), so translation is direct — no shell dialect conversion needed. Unlike the bashrc gist, the zshrc gist keeps the prompt, history, and completion sections hand-maintained (they use zsh-native `precmd`, `setopt`, `zstyle` rather than the Nix-managed starship/oh-my-zsh stack).
+
+### Always port (shell-agnostic)
+- Git aliases from `aliases.nix` (`gup`, `gst`, `gco`, etc.) — ensure they exist in the gist's alias section
+- General aliases from the gist's existing list (don't drop what's already there unless Nix removed it)
+- New git aliases found in `aliases.nix` that aren't in the gist yet
+
+### Never port (macOS/secret-dependent)
+- SSH aliases (`ssh-termux`, `ecoray-*`) — depend on `nix_secrets` env vars
+- `heic2tiff` — macOS-only (`sips`)
+- `omp` wrapper — macOS-only
+- `yt-dlp` / `repolicense` — local binaries
+- `nrs`, `nix-search`, `nix-which`, `nix-update`, `nix-rollback` — NixOS/darwin-specific
+- PATH exports — macOS-specific paths
+- Mole/Opencode completions — tool-specific
+- `TIMEFMT` — too niche for portable use
+- `MULTICA_*` — work-specific
+
+### Hand-maintained (do NOT sync from Nix)
+- **Prompt** (`precmd`, `__git_ps1`): hand-rolled Catppuccin Mocha PS1 using zsh-native `%F{#rrggbb}` sequences. The Nix config uses starship; the gist intentionally avoids external deps.
+- **History** (`setopt HIST_*`, `HISTSIZE`, `SAVEHIST`): zsh-native equivalents of the Nix-managed settings.
+- **Completion** (`compinit`, `zstyle`): zsh-native, replaces oh-my-zsh's plugin system.
+- **Niceties** (`setopt AUTO_CD`, `CORRECT`, `EXTENDED_GLOB`): zsh-native, no Nix equivalent.
+- **Editor detection**: already in gist, no Nix equivalent.
+- **Color vars** (`c_text`, `c_green`, etc.): used by the hand-rolled prompt; keep in sync with the bashrc gist's Catppuccin palette.
 
 ## Updating a Gist
 
