@@ -3,7 +3,7 @@
 {
   homebrew.casks = [
     # ── Development ─────────────────────────────────────────
-    "adoptopenjdk"          # deprecated → migrate to "temurin" eventually
+    "temurin"
     "android-platform-tools"
     "claude-code@latest"
     "cmux"
