@@ -1,7 +1,0 @@
-[sandbox]
-enabled_by_default = true
-default_terminal_mode = "container"
-container_runtime = "apple_container"
-
-[session]
-default_tool = "opencode"

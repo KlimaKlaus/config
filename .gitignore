@@ -3,11 +3,8 @@
 # MacOS
 .DS_Store
 
-# Claude
-*/shell-snapshots/*
-/.claude/anthropic_key.sh
-/.claude/.credentials.json
-
+# Claude (deleted — blanket ignore if recreated)
+/.claude/
 # Nix build artifacts
 /result
 
@@ -108,36 +105,18 @@ lazygit/state.yml
 /nix_secrets
 
 
-# Node modules (should never be tracked)
-node_modules/
-/opencode/node_modules/
-# Pi
-/.pi/agent/auth.json
-/.pi/sandbox/agent/auth.json
-/.pi/agent/sessions/*
-/.pi/agent/pi-undo-redo/blobs/*
-/.pi/agent/run-history.jsonl
-/.pi/sandbox/agent/sessions/*
-
-# Agent-of-empires
-/.agent-of-empires/agent_state.json
-/.agent-of-empires/agent_state.jsonl
-/.agent-of-empires/agent_state_backup.json
-/.agent-of-empires/agent_state_backup.jsonl
-/.agent-of-empires/sessions/*
-/.agent-of-empires/logs/*
-/.agent-of-empires/profiles/apple/sessions.json
-/.agent-of-empires/profiles/apple/sessions.json.bak
-/.agent-of-empires/profiles/default/sessions.json
-/.agent-of-empires/profiles/default/sessions.json.bak
-/.agent-of-empires/push*
-/.agent-of-empires/serve*
-/.agent-of-empires/update_cache.json
+/opencode/
+# Pi (deleted — blanket ignore if recreated)
+/.pi/
+# Agent-of-empires (deleted — blanket ignore if recreated)
+/.agent-of-empires/
 
 # Multica
 /.multica/*
 
+
 # omp
+/.omp/run/
 /.omp/sessions/*
 /.omp/agent/session*/*
 /.omp/agent/agent.d*
