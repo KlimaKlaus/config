@@ -2,7 +2,6 @@
 
 {
   homebrew.brews = [
-    "aoe"
     "apache-spark"
     "bun"
     "container"
@@ -22,7 +21,6 @@
 
     "remindctl"
     "sdkman-cli"
-    "tmux"                 # dep of aoe
     "apfel"
   ];
 }
