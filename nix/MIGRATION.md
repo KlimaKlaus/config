@@ -118,8 +118,6 @@ Done: `git rm -r --cached .pi/node_modules` on 2026-07-12. No longer tracked.
         casks.nix           # Brew casks (GUI apps)
         mas.nix             # Mac App Store apps
         activation.nix      # Brew trust + cleanup scripts
-    packages/               # Custom Nix packages
-      openwhispr.nix
 
   # Gitignored (on disk, not in repo):
   nix_secrets               # SSH aliases, API tokens

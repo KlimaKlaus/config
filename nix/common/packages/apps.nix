@@ -11,6 +11,5 @@
     sioyek
     jankyborders
     lmstudio
-    (pkgs.callPackage ../../packages/openwhispr.nix { })
   ];
 }
