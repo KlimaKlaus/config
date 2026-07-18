@@ -1,7 +1,7 @@
 # Host: freyr (NixOS — custom build PC)
 #
 # Freyr is a Vanir god in Norse mythology — brother of
-# Freyr, ruler of peace, prosperity, and fair weather. He famously gave away
+# Freyja, ruler of peace, prosperity, and fair weather. He famously gave away
 # his magic sword (a weapon that fought on its own) in exchange for love.
 #
 # This machine follows the same trade: instead of a gaming GPU pushing frames

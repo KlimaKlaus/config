@@ -81,7 +81,14 @@
   i18n.defaultLocale = "en_DK.UTF-8";
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "dk";
+    keyMap = "dk";                   # Danish keyboard on TTYs
+  };
+
+  # ── Keyboard (desktop / XKB — Hyprland picks this up) ─────────
+  services.xserver.xkb = {
+    layout = "dk";                   # Danish ISO keyboard layout
+    variant = "";                    # Default variant (no extras)
+    options = "compose:rctrl";       # Right Ctrl as compose key (ISO keyboard staple)
   };
 
   # ── User ───────────────────────────────────────────────────────
