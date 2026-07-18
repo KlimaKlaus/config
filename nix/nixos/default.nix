@@ -43,6 +43,24 @@
     };
   };
 
+  # ── Second GPU (PCIe Passthrough) ──────────────────────────────
+  # The second PCIe GPU is isolated from the host via VFIO for
+  # passthrough to a VM. Fill in the PCI IDs below.
+  #
+  # Find them with: lspci -nn | grep -i nvidia
+  # Example output: "01:00.0 VGA compatible controller [0300]: NVIDIA
+  #                  Corporation GA102 [GeForce RTX 3080] [10de:2206]"
+  # The IDs are vendor:device (e.g. "10de:2206").
+  boot.kernelParams = [
+    "amd_iommu=on"    # or "intel_iommu=on" for Intel CPUs
+    "iommu=pt"        # Pass-through mode for better VM performance
+  ];
+
+  boot.kernelModules = [ "vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd" ];
+
+  # ⚠️ TODO: Replace with the actual PCI IDs of your second GPU
+  # boot.extraModprobeConfig = "options vfio-pci ids=10de:XXXX,10de:YYYY";
+
   # CUDA toolkit for LLM workloads (llama.cpp, PyTorch, etc.)
   environment.systemPackages = with pkgs; [
     cudaPackages.cuda_nvcc
@@ -55,6 +73,7 @@
 
   # ── Networking ─────────────────────────────────────────────────
   networking.networkmanager.enable = true;
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   # ── Time & Locale ──────────────────────────────────────────────
   time.timeZone = "Europe/Copenhagen";
