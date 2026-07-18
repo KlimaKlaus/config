@@ -12,6 +12,7 @@
 {
   imports = [
     ./hardware-configuration.nix  # Auto-generated — MUST exist before first build
+    ./desktop.nix                 # Hyprland desktop environment
   ];
 
   # ── Bootloader ────────────────────────────────────────────────
@@ -52,7 +53,7 @@
   #                  Corporation GA102 [GeForce RTX 3080] [10de:2206]"
   # The IDs are vendor:device (e.g. "10de:2206").
   boot.kernelParams = [
-    "amd_iommu=on"    # or "intel_iommu=on" for Intel CPUs
+    "amd_iommu=on"     # AMD CPU — enables IOMMU for VFIO passthrough
     "iommu=pt"        # Pass-through mode for better VM performance
   ];
 
