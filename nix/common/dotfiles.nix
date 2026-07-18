@@ -6,41 +6,30 @@
     # ── Vault (Obsidian memory — separate git repo) ─────────────
     "vault".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/loki-obsidian-memory";
 
-    # ── Starship ─────────────────────────────────────────────────
+    # ── Cross-platform dotfiles ─────────────────────────────────
     ".config/starship.toml".source = "${flakeDir.outPath}/starship.toml";
-
-    # ── Ghostty ──────────────────────────────────────────────────
     ".config/ghostty/config".source = "${flakeDir.outPath}/config.ghostty";
-
-    # ── LazyGit ──────────────────────────────────────────────────
     ".config/lazygit/config.yml".source = "${flakeDir.outPath}/lazygit/config.yml";
-
-    # ── Tmux ────────────────────────────────────────────────────
     ".tmux.conf".source = "${flakeDir.outPath}/.tmux.conf";
-    # TPM and plugins live in ~/.tmux/plugins/ (gitignored, runtime-managed)
-
-    # ── AeroSpace ───────────────────────────────────────────────
-    ".aerospace.toml".source = "${flakeDir.outPath}/.aerospace.toml";
-
-    # ── Zed ─────────────────────────────────────────────────────
     ".config/zed/settings.json".source = "${flakeDir.outPath}/zed/settings.json";
 
-    # ── Sioyek ──────────────────────────────────────────────────
+    # ── config-add helper (cross-platform) ────────────────────
+    ".local/bin/config-add".source = "${flakeDir.outPath}/scripts/config-add";
+
+  } // lib.optionalAttrs pkgs.stdenv.isDarwin {
+
+    # ── macOS-only dotfiles ─────────────────────────────────────
+    ".aerospace.toml".source = "${flakeDir.outPath}/.aerospace.toml";
     "Library/Application Support/sioyek/prefs_user.config".source = "${flakeDir.outPath}/sioyek/prefs_user.config";
+    "Library/Application Support/com.raycast.macos/Extensions/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
 
     # ── Raycast Script Commands ───────────────────────────────────
     ".local/share/raycast-scripts/ask-huginn.sh".source = "${flakeDir.outPath}/raycast-scripts/ask-huginn.sh";
     ".local/share/raycast-scripts/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
 
-    # ── Raycast (v1 extensions dir) ───────────────────────────────
-    "Library/Application Support/com.raycast.macos/Extensions/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
-
-
-    # ── config-add helper ───────────────────────────────────
-    ".local/bin/config-add".source = "${flakeDir.outPath}/scripts/config-add";
-
     # ── btop ────────────────────────────────────────────────────
     ".config/btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/btop.conf";
     ".config/btop/themes/catppuccin_mocha.theme".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/themes/catppuccin_mocha.theme";
-};
+
+  };
 }

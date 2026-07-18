@@ -62,7 +62,6 @@
     in {
       darwinConfigurations."lucas-macbook-pro" = mkDarwin "lucas-macbook-pro";
 
-      # Uncomment when you have a NixOS machine:
-      # nixosConfigurations."lucas-nixos" = mkNixOS "lucas-nixos";
+      nixosConfigurations."freyr" = mkNixOS "freyr";
     };
 }

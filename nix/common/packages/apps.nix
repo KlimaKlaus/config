@@ -11,5 +11,12 @@
     sioyek
     jankyborders
     lmstudio
+  ] ++ lib.optionals stdenv.isLinux [
+    # LLM/dev tools for the NixOS desktop
+    cudaPackages.cuda_nvcc
+    cudaPackages.cudnn
+    cudaPackages.cutensor
+    nvidia-docker
+    ollama
   ];
 }

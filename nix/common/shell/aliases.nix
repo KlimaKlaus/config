@@ -25,7 +25,8 @@
     alias lg="lazygit"
     alias gup="git pull --rebase"
 
-    # ── Batch HEIC → TIFF conversion ─────────────────────────
+    # ── Batch HEIC → TIFF conversion (macOS only — uses sips) ──
+    if command -v sips >/dev/null 2>&1; then
     heic2tiff() {
       if [ $# -eq 0 ]; then
         echo "Usage: heic2tiff <file.heic> [file2.HEIC ...]"
@@ -39,6 +40,7 @@
       done
       echo "Done."
     }
+    fi
 
     # ── OMP wrapper (auto-saves session to vault after exit) ──
     omp() {

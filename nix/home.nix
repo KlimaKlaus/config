@@ -16,11 +16,14 @@
     stateVersion = lib.mkForce stateVersion;
   };
 
-  # ── Fix ~/.nix-profile link (new nix CLI vs home-manager mismatch) ──
-  home.activation.linkNixProfile = lib.hm.dag.entryAfter ["linkGeneration"] ''
-    rm -f "$HOME/.nix-profile"
-    ln -sf ${config.home.path} "$HOME/.nix-profile"
-  '';
+  # ── Fix ~/.nix-profile link (nix-darwin: new nix CLI vs home-manager mismatch) ──
+  # Unnecessary on NixOS where the system manages the profile.
+  home.activation.linkNixProfile = lib.hm.dag.entryAfter ["linkGeneration"] (
+    if pkgs.stdenv.isDarwin then ''
+      rm -f "$HOME/.nix-profile"
+      ln -sf ${config.home.path} "$HOME/.nix-profile"
+    '' else ""
+  );
 
 
   programs.home-manager.enable = true;
