@@ -19,5 +19,6 @@
     tree
     figlet
     libheif
+    btop
   ];
 }

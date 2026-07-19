@@ -38,5 +38,9 @@
 
     # ── config-add helper ───────────────────────────────────
     ".local/bin/config-add".source = "${flakeDir.outPath}/scripts/config-add";
+
+    # ── btop ────────────────────────────────────────────────────
+    ".config/btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/btop.conf";
+    ".config/btop/themes/catppuccin_mocha.theme".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/themes/catppuccin_mocha.theme";
 };
 }
