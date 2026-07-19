@@ -13,7 +13,14 @@
 #   sudo nix --experimental-features "nix-command flakes" \
 #     run github:nix-community/disko/latest -- \
 #     --mode disko ./nix/nixos/disk-config.nix
-{
+{ lib, ... }: {
+  # Safety guard: nix will emit a WARNING if device is still the placeholder
+  warnings = lib.optional (builtins.match ".*/dev/sd.?" "/dev/sdX" != null) ''
+    disk-config.nix: device is still set to "/dev/sdX" (the placeholder).
+    Edit nix/nixos/disk-config.nix and change `device` to your actual disk
+    (e.g. /dev/nvme0n1, /dev/sda). This layout WILL DESTROY ALL DATA on that disk.
+  '';
+
   disk = {
     main = {
       type = "disk";

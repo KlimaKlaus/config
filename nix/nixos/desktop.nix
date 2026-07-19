@@ -23,6 +23,13 @@
     withUWSM = true;  # Unified session management (lockscreen, idle, etc.)
   };
 
+  # ── NVIDIA + Hyprland workaround ──────────────────────────────
+  # Hardware cursor rendering flickers/stutters on NVIDIA.
+  # https://wiki.hyprland.org/Configuring/Environment-variables/
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
   # ── Display Manager (greeter) ─────────────────────────────────
   services.displayManager.sddm = {
     enable = true;

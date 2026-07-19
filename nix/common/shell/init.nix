@@ -38,7 +38,7 @@
     if command -v darwin-rebuild >/dev/null 2>&1; then
       rebuild() { sudo darwin-rebuild switch --flake ~/config && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
     else
-      rebuild() { sudo nixos-rebuild switch --flake ~/config#freyr && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
+      rebuild() { sudo nixos-rebuild switch --flake ~/config#"$(hostname)" && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
     fi
     alias nrs="rebuild"
     alias nix-search="nix search nixpkgs"
@@ -47,7 +47,7 @@
       nix-update() { nix flake update --flake ~/config && sudo darwin-rebuild switch --flake ~/config && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
       nix-rollback() { sudo darwin-rebuild --list-generations --flake ~/config; echo "Pick: sudo darwin-rebuild --switch-generation <N> --flake ~/config"; }
     else
-      nix-update() { nix flake update --flake ~/config && sudo nixos-rebuild switch --flake ~/config#freyr && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
+      nix-update() { nix flake update --flake ~/config && sudo nixos-rebuild switch --flake ~/config#"$(hostname)" && nix-collect-garbage -d && { sudo -n nix-collect-garbage -d 2>/dev/null & } && exec zsh; }
       nix-rollback() { sudo nixos-rebuild --list-generations --flake ~/config; echo "Pick: sudo nixos-rebuild --switch-generation <N> --flake ~/config"; }
     fi
   '';
