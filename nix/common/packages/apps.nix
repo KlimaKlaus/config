@@ -5,7 +5,6 @@
     docker
   ] ++ lib.optionals stdenv.isDarwin [
     aerospace
-    slack
     zed-editor
     sioyek
     jankyborders
