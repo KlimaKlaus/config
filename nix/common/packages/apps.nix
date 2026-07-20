@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    spotify
     docker
   ] ++ lib.optionals stdenv.isDarwin [
     aerospace

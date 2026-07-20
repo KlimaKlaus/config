@@ -38,6 +38,7 @@
     "gyroflow"
     "handbrake-app"
     "prince"
+    "spotify"
     "sioyek"
     "syntax-highlight"
 
