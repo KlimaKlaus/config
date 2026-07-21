@@ -60,3 +60,4 @@
     fi
   '';
 }
+alias gtop="~/klaus-services/gtop"
