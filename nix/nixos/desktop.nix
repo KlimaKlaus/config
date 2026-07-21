@@ -18,6 +18,10 @@
 
 {
   # ── Hyprland compositor ───────────────────────────────────────
+  # KDE Plasma 6 fallback (NVIDIA-compatible)
+  services.xserver.enable = true;
+  services.xserver.desktopManager.plasma6.enable = true;
+
   programs.hyprland = {
     enable = true;
     withUWSM = true;  # Unified session management (lockscreen, idle, etc.)
@@ -30,13 +34,6 @@
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
-  # ── Display Manager (greeter) ─────────────────────────────────
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;    # SDDM on Wayland (matches compositor)
-    theme = "catppuccin-mocha";
-    package = pkgs.kdePackages.sddm;
-  };
 
   # ── Desktop packages ──────────────────────────────────────────
   environment.systemPackages = with pkgs; [
