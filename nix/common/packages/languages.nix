@@ -8,7 +8,7 @@
       jupyterlab
       numpy
     ]))
-    nodejs
+    nodejs_22
     go
     rustc
     cargo
