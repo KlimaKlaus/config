@@ -16,7 +16,8 @@
   boot.initrd.systemd.emergencyAccess = true;
 
   # ── NVIDIA GPU ─────────────────────────────────────────────────
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.displayManager.sddm.wayland.enable = false;
 
   hardware.graphics = {
     enable = true;
@@ -35,8 +36,7 @@
   };
 
   # ── VFIO (second GPU passthrough) ──────────────────────────────
-  boot.kernelParams = [ "amd_iommu=on" "iommu=pt" ];
-  boot.kernelModules = [ "vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd" ];
+  boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" "kvm-amd" ];
 
   # CUDA toolkit for LLM workloads
   environment.systemPackages = with pkgs; [
@@ -45,6 +45,7 @@
   ];
 
   hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.suppressNvidiaDriverAssertion = true;
 
   # ── Networking ─────────────────────────────────────────────────
   networking.networkmanager.enable = true;

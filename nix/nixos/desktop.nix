@@ -20,12 +20,9 @@
   # ── Hyprland compositor ───────────────────────────────────────
   # KDE Plasma 6 fallback (NVIDIA-compatible)
   services.xserver.enable = true;
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.xserver.windowManager.openbox.enable = true;
+  services.displayManager.sddm.enable = true;
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;  # Unified session management (lockscreen, idle, etc.)
-  };
 
   # ── NVIDIA + Hyprland workaround ──────────────────────────────
   # Hardware cursor rendering flickers/stutters on NVIDIA.
@@ -37,6 +34,12 @@
 
   # ── Desktop packages ──────────────────────────────────────────
   environment.systemPackages = with pkgs; [
+    firefox
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    neovim
+    nerd-fonts.jetbrains-mono
+    neovim
     # Bar & launcher
     waybar
     wofi
