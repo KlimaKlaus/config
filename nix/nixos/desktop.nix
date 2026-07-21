@@ -1,6 +1,11 @@
 # Desktop — X11 Openbox for Freyr
 # Hyprland/Wayland disabled: NVIDIA 580 open kernel driver crash
-# GPU order: 5070 Ti = card0 (no display), 3070 = card1 (monitor on DP-1)
+#
+# GPU layout (from nvidia-smi):
+#   GPU 0 (bus 23:00.0) = RTX 3070 (8GB)     — monitor on DP-1, Weston/SDDM
+#   GPU 1 (bus 2D:00.0) = RTX 5070 Ti (16GB) — headless compute
+#
+# Service mapping: see nix/nixos/gpu/default.nix and nix/common/services/gpu-services.nix
 
 { config, pkgs, lib, ... }:
 
