@@ -64,6 +64,10 @@
   };
 
   # ── User ───────────────────────────────────────────────────────
+  users.users.lucas.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG7TF8cQ2yPS31ts4a7YSWspMQ9Z3+hjXfcEpIFCXpBN lucasfth@bjelke-torres.com"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKukjLpmhqr3HDL6VCCXMuzQQtuZ/xXbMz6ZIyp5P/E4 klaus-vps-gateway"
+  ];
   users.users.lucas = {
     isNormalUser = true;
     extraGroups = [ "wheel" "docker" "networkmanager" ];
