@@ -18,10 +18,11 @@
 
 {
   # ── Hyprland compositor ───────────────────────────────────────
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;  # Unified session management (lockscreen, idle, etc.)
-  };
+  # KDE Plasma 6 fallback (NVIDIA-compatible)
+  services.xserver.enable = true;
+  services.xserver.windowManager.openbox.enable = true;
+  services.displayManager.sddm.enable = true;
+
 
   # ── NVIDIA + Hyprland workaround ──────────────────────────────
   # Hardware cursor rendering flickers/stutters on NVIDIA.
@@ -30,16 +31,15 @@
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
-  # ── Display Manager (greeter) ─────────────────────────────────
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;    # SDDM on Wayland (matches compositor)
-    theme = "catppuccin-mocha";
-    package = pkgs.kdePackages.sddm;
-  };
 
   # ── Desktop packages ──────────────────────────────────────────
   environment.systemPackages = with pkgs; [
+    firefox
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    neovim
+    nerd-fonts.jetbrains-mono
+    neovim
     # Bar & launcher
     waybar
     wofi
@@ -62,9 +62,9 @@
     networkmanagerapplet   # Network tray icon
 
     # Fonts for waybar/icons
-    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+  # Fonts
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
 
     # Screenshot
     grim                   # Wayland screenshot
@@ -98,8 +98,7 @@
   # ── Fonts ──────────────────────────────────────────────────────
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-emoji
-    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+    noto-fonts-color-emoji
   ];
   fonts.fontconfig.defaultFonts = {
     monospace = [ "FiraCode Nerd Font" ];
