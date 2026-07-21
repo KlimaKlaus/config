@@ -16,7 +16,7 @@
   boot.initrd.systemd.emergencyAccess = true;
 
   # ── NVIDIA GPU ─────────────────────────────────────────────────
-  services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
+  services.xserver.videoDrivers = [ "modesetting" ];
   services.displayManager.sddm.wayland.enable = false;
 
   hardware.graphics = {
@@ -24,19 +24,8 @@
     enable32Bit = true;
   };
 
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    prime.offload.enable = false;
-    prime.offload.enableOffloadCmd = false;
-  };
 
   # ── VFIO (second GPU passthrough) ──────────────────────────────
-  boot.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" "kvm-amd" ];
 
   # CUDA toolkit for LLM workloads
   environment.systemPackages = with pkgs; [
@@ -44,8 +33,6 @@
     cudaPackages.cudnn
   ];
 
-  hardware.nvidia-container-toolkit.enable = true;
-  hardware.nvidia-container-toolkit.suppressNvidiaDriverAssertion = true;
 
   # ── Networking ─────────────────────────────────────────────────
   networking.networkmanager.enable = true;
@@ -97,7 +84,7 @@
   # ── Docker ─────────────────────────────────────────────────────
   virtualisation.docker = {
     enable = true;
-    enableNvidia = true;
+    enableNvidia = false;
     rootless.enable = false;
     rootless.setSocketVariable = false;
     daemon.settings.features.buildkit = true;
