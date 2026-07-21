@@ -1,0 +1,113 @@
+# ── Catppuccin Mocha tint2 panel ────────────────────────────────
+# Color palette:
+#   base:     #1e1e2e   surface0: #313244  surface1: #45475a
+#   text:     #cdd6f4   subtext0: #6c7086   subtext1: #585b70
+#   blue:     #89b4fa   lavender: #b4befe   pink:    #f5c2e7
+#   green:    #a6e3a1   peach:    #fab387   mauve:   #cba6f7
+
+# ── Panel ─────────────────────────────────────────────────────
+panel_items = TSC
+panel_monitor = all
+panel_position = top center horizontal
+panel_size = 100% 32
+panel_margin = 0 0
+panel_padding = 8 0 4
+panel_background_id = 1
+wm_menu = 1
+panel_dock = 0
+panel_layer = top
+
+# ── Taskbar ───────────────────────────────────────────────────
+taskbar_mode = multi_desktop
+taskbar_padding = 2 2 2
+taskbar_background_id = 0
+taskbar_active_background_id = 0
+taskbar_name = 1
+taskbar_name_padding = 6 0
+taskbar_name_background_id = 0
+taskbar_name_font = FiraCode Nerd Font 10
+taskbar_name_font_color = #cdd6f4 100
+taskbar_name_active_background_id = 0
+taskbar_name_active_font_color = #cdd6f4 100
+
+taskbar_distribute_size = 0
+taskbar_sort_order = application
+
+# ── Task buttons ──────────────────────────────────────────────
+task_icon = 0
+task_text = 1
+task_width = 200
+task_centered = 0
+task_padding = 6 3
+task_font = FiraCode Nerd Font 9
+task_font_color = #6c7086 100
+task_active_font_color = #cdd6f4 100
+task_iconified_font_color = #45475a 100
+
+task_background_id = 2
+task_active_background_id = 3
+task_urgent_background_id = 4
+task_iconified_background_id = 2
+
+# ── System tray ───────────────────────────────────────────────
+systray_padding = 0 4 2
+systray_background_id = 0
+systray_sort = ascending
+systray_icon_size = 18
+systray_monitor = primary
+
+# ── Clock ─────────────────────────────────────────────────────
+time1_format = %a %d %b  %H:%M
+time1_font = FiraCode Nerd Font 10
+time1_timezone = Europe/Copenhagen
+time1_font_color = #fab387 100
+
+clock_padding = 4 0
+clock_background_id = 0
+clock_lclick_command = ""
+clock_rclick_command = ""
+
+# ── Backgrounds ───────────────────────────────────────────────
+# ID 0 = fully transparent
+background_color = #000000 0
+border_width = 0
+background_border = #000000 0
+
+# ID 1 = panel background
+rounded = 0
+border_width = 0
+background_color = #1e1e2e 100
+background_border = #1e1e2e 100
+
+# ID 2 = inactive task button
+rounded = 4
+border_width = 0
+background_color = #11111b 60
+background_border = #11111b 0
+
+# ID 3 = active task button
+rounded = 4
+border_width = 0
+background_color = #313244 100
+background_border = #313244 100
+
+# ID 4 = urgent task button
+rounded = 4
+border_width = 0
+background_color = #f38ba8 40
+background_border = #f38ba8 100
+
+# ── Tooltips ──────────────────────────────────────────────────
+tooltip_padding = 4 4
+tooltip_show_timeout = 0.5
+tooltip_hide_timeout = 0.1
+tooltip_background_id = 5
+tooltip_font_color = #cdd6f4 100
+tooltip_font = FiraCode Nerd Font 9
+
+# ID 5 = tooltip background
+rounded = 4
+border_width = 1
+background_color = #313244 100
+border_color = #45475a 100
+background_border = #45475a 100

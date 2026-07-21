@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# ── Openbox Autostart ──────────────────────────────────────────
+# Catppuccin Mocha themed desktop startup
+
+# Wallpaper — set a solid Catppuccin Mocha base color
+# (replace with an image path after placing wallpapers in ~/Pictures/wallpapers/)
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+WALLPAPER="$WALLPAPER_DIR/wallpaper.png"
+
+if [ -f "$WALLPAPER" ]; then
+  # feh with --bg-fill for image wallpaper
+  feh --bg-fill --no-fehbg "$WALLPAPER" &
+else
+  # Fallback: solid Catppuccin Mocha base (#1e1e2e)
+  xsetroot -solid "#1e1e2e" &
+fi
+
+# Tint2 panel
+tint2 &
+
+# Notification daemon
+dunst &
+
+# Network Manager applet
+nm-applet &
+
+# PolicyKit agent — needed for GUI auth dialogs
+/run/current-system/sw/libexec/polkit-gnome-authentication-agent-1 &
+
+# Set keyboard repeat rate (nice for vim motions)
+xset r rate 250 40 &
+
+# Disable screen blanking
+xset s off -dpms &
+
+# Compositor for transparency and smoothness
+picom --config "$HOME/.config/picom/picom.conf" &
+
+# Set cursor theme (if available)
+xsetroot -cursor_name left_ptr &
