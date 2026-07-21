@@ -28,8 +28,8 @@
     ".local/share/raycast-scripts/invert-scroll.applescript".source = "${flakeDir.outPath}/raycast-scripts/invert-scroll.applescript";
 
     # ── btop ────────────────────────────────────────────────────
-    ".config/btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/btop.conf";
-    ".config/btop/themes/catppuccin_mocha.theme".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Desktop/code/config/btop/themes/catppuccin_mocha.theme";
+    ".config/btop/btop.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/config/btop/btop.conf";
+    ".config/btop/themes/catppuccin_mocha.theme".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/config/btop/themes/catppuccin_mocha.theme";
 
   };
 }
