@@ -1,3 +1,16 @@
+# Home-manager entry module for lucas.
+# Activated by nixosConfigurations."freyr" and darwinConfigurations."lucas-macbook-pro".
+#
+# Imports:
+#   - packages    (CLI tooling)
+#   - shell       (zsh + starship configuration)
+#   - git.nix     (gitconfig)
+#   - tmux.nix    (tmux config)
+#   - vim.nix     (Neovim config)
+#   - desktop     (Openbox, tint2, picom — Linux only)
+#   - services    (GPU inference services — freyr only)
+#   - dotfiles.nix (symlink management for btop, aerospace, etc.)
+
 { config, pkgs, lib, flakeDir, username, hostname, homeDirectory, stateVersion, ... }:
 
 {
@@ -9,6 +22,7 @@
     ./common/vim.nix
     ./common/desktop
     ./common/dotfiles.nix
+    ./common/services/gpu-services.nix
   ];
 
   home = {
@@ -18,14 +32,12 @@
   };
 
   # ── Fix ~/.nix-profile link (nix-darwin: new nix CLI vs home-manager mismatch) ──
-  # Unnecessary on NixOS where the system manages the profile.
   home.activation.linkNixProfile = lib.hm.dag.entryAfter ["linkGeneration"] (
     if pkgs.stdenv.isDarwin then ''
       rm -f "$HOME/.nix-profile"
       ln -sf ${config.home.path} "$HOME/.nix-profile"
     '' else ""
   );
-
 
   programs.home-manager.enable = true;
 

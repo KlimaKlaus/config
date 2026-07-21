@@ -5,48 +5,17 @@
   imports = [
     ./hardware-configuration.nix
     ./desktop.nix
+    ./gpu
   ];
 
   # ── Bootloader ────────────────────────────────────────────────
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # Force script-based initrd — systemd initrd breaks /sysroot mount
-  # Emergency access for debugging boot failures
   boot.initrd.systemd.enable = true;
   boot.initrd.systemd.emergencyAccess = true;
 
-  # ── NVIDIA GPU ─────────────────────────────────────────────────
-  services.xserver.videoDrivers = [ "nvidia" ];
-  services.displayManager.sddm.wayland.enable = true;
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
-
-  # ── VFIO (second GPU passthrough) ──────────────────────────────
-
-  # CUDA toolkit for LLM workloads
-  environment.systemPackages = with pkgs; [
-    cudaPackages.cuda_nvcc
-    cudaPackages.cudnn
-  ];
-
-
   # ── Networking ─────────────────────────────────────────────────
-  hardware.nvidia = {
-    modesetting.enable = true;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
-    prime.offload.enable = false;
-    prime.offload.enableOffloadCmd = false;
-  };
-  hardware.nvidia-container-toolkit.enable = true;
-  boot.blacklistedKernelModules = [ "nouveau" ];
   networking.networkmanager.enable = true;
-  networking.firewall.allowedTCPPorts = [ 22 ];
   services.tailscale.enable = true;
 
   # ── Time & Locale ──────────────────────────────────────────────
@@ -117,9 +86,3 @@
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "25.05";
 }
-
-  # Prevent suspend/sleep/hibernate
-  services.logind.extraConfig = "HandleLidSwitch=ignore
-HandleSuspendKey=ignore
-HandleHibernateKey=ignore
-IdleAction=ignore";
