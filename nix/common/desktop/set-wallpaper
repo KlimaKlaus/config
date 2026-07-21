@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# ── Catppuccin Mocha wallpaper setter ──────────────────────────
+set -euo pipefail
+
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+WALLPAPER="$WALLPAPER_DIR/wallpaper.png"
+
+usage() {
+  echo "usage: set-wallpaper [set|generate|download]"
+  echo "  set FILE   — set a local image as wallpaper (png/jpg)"
+  echo "  generate   — create solid Catppuccin Mocha wallpaper"
+  echo "  download   — placeholder for fetching wallpapers"
+  exit 0
+}
+
+generate_wallpaper() {
+  # Create a 1920x1080 solid color Catppuccin Mocha (#1e1e2e)
+  # with a subtle gradient effect
+  if command -v convert &>/dev/null; then
+    convert -size 1920x1080 xc:"#1e1e2e" \
+      -fill "rgba(49,50,68,0.3)" -draw "circle 960,540 960,1080" \
+      "$WALLPAPER"
+    echo "Generated Catppuccin Mocha wallpaper → $WALLPAPER"
+  else
+    # Fallback: 1px PNG
+    printf '\x89PNG\r\n\x1a\n' > "$WALLPAPER"
+    echo "No ImageMagick — set solid #1e1e2e on next login instead"
+    return 1
+  fi
+}
+
+case "${1:-generate}" in
+  set)
+    [ -z "${2:-}" ] && { echo "usage: set-wallpaper set FILE"; exit 1; }
+    cp "$2" "$WALLPAPER"
+    echo "Wallpaper set → $2"
+    feh --bg-fill "$WALLPAPER" &
+    ;;
+  generate)
+    generate_wallpaper
+    feh --bg-fill "$WALLPAPER" 2>/dev/null || true
+    ;;
+  download|*)
+    usage
+    ;;
+esac
