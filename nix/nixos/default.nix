@@ -17,7 +17,7 @@
 
   # ── NVIDIA GPU ─────────────────────────────────────────────────
   services.xserver.videoDrivers = [ "nvidia" ];
-  services.displayManager.sddm.wayland.enable = false;
+  services.displayManager.sddm.wayland.enable = true;
 
   hardware.graphics = {
     enable = true;
@@ -37,9 +37,9 @@
   # ── Networking ─────────────────────────────────────────────────
   hardware.nvidia = {
     modesetting.enable = true;
-    open = false;
+    open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     prime.offload.enable = false;
     prime.offload.enableOffloadCmd = false;
   };
@@ -117,3 +117,9 @@
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "25.05";
 }
+
+  # Prevent suspend/sleep/hibernate
+  services.logind.extraConfig = "HandleLidSwitch=ignore
+HandleSuspendKey=ignore
+HandleHibernateKey=ignore
+IdleAction=ignore";
