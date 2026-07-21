@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+
+<resistance>
+  <strength>10</strength>
+  <screen_edge_strength>20</screen_edge_strength>
+</resistance>
+
+<focus>
+  <focusNew>yes</focusNew>
+  <followMouse>no</followMouse>
+  <focusLast>yes</focusLast>
+  <underMouse>no</underMouse>
+  <focusDelay>0</focusDelay>
+  <raiseOnFocus>no</raiseOnFocus>
+</focus>
+
+<placement>
+  <policy>Smart</policy>
+  <center>yes</center>
+</placement>
+
+<!-- Catppuccin Mocha theme colors -->
+<theme>
+  <name>Catppuccin Mocha</name>
+  <titleLayout>LIMC</titleLayout>
+  <keepBorder>yes</keepBorder>
+  <animateIconify>yes</animateIconify>
+  <font place="ActiveWindow">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>bold</weight>
+    <slant>normal</slant>
+  </font>
+  <font place="InactiveWindow">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>normal</weight>
+    <slant>normal</slant>
+  </font>
+  <font place="MenuHeader">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>bold</weight>
+    <slant>normal</slant>
+  </font>
+  <font place="MenuItem">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>normal</weight>
+    <slant>normal</slant>
+  </font>
+  <font place="ActiveOnScreenDisplay">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>bold</weight>
+    <slant>normal</slant>
+  </font>
+  <font place="InactiveOnScreenDisplay">
+    <name>FiraCode Nerd Font</name><size>10</size><weight>normal</weight>
+    <slant>normal</slant>
+  </font>
+
+  <!-- Window geometry -->
+  <cornerRadius>8</cornerRadius>
+
+  <!-- Active window -->
+  <window>
+    <title fg="#cdd6f4" bg="#1e1e2e"/>
+    <label fg="#cdd6f4" bg="#1e1e2e"/>
+    <handle fg="#313244" bg="#1e1e2e"/>
+    <grip fg="#45475a" bg="#1e1e2e"/>
+    <button fg="#cdd6f4" bg="#1e1e2e" pressed.fg="#f5c2e7" pressed.bg="#313244" hover.fg="#cdd6f4" hover.bg="#313244"/>
+  </window>
+
+  <!-- Inactive window -->
+  <inactive>
+    <title fg="#585b70" bg="#181825"/>
+    <label fg="#585b70" bg="#181825"/>
+    <handle fg="#313244" bg="#181825"/>
+    <grip fg="#45475a" bg="#181825"/>
+    <button fg="#585b70" bg="#181825" pressed.fg="#6c7086" pressed.bg="#313244" hover.fg="#cdd6f4" hover.bg="#313244"/>
+  </inactive>
+
+  <!-- Menus -->
+  <menu>
+    <title fg="#cdd6f4" bg="#11111b"/>
+    <header fg="#89b4fa" bg="#11111b"/>
+    <separator fg="#313244" bg="#11111b"/>
+    <items fg="#cdd6f4" bg="#11111b" active.fg="#f5c2e7" active.bg="#313244"/>
+    <disabled fg="#45475a" bg="#11111b"/>
+  </menu>
+
+  <!-- OSD (on-screen display) -->
+  <osd>
+    <active fg="#cdd6f4" bg="#1e1e2e"/>
+    <inactive fg="#585b70" bg="#181825"/>
+  </osd>
+</theme>
+
+<desktops>
+  <number>4</number>
+  <firstdesk>1</firstdesk>
+  <popupTime>400</popupTime>
+  <names>
+    <name>1</name>
+    <name>2</name>
+    <name>3</name>
+    <name>4</name>
+  </names>
+</desktops>
+
+<resize>
+  <drawContents>yes</drawContents>
+  <popupShow>Always</popupShow>
+  <popupPosition>Center</popupPosition>
+  <popupFixedPosition>
+    <x>10</x><y>10</y>
+  </popupFixedPosition>
+</resize>
+
+<margins>
+  <top>32</top>
+  <bottom>0</bottom>
+  <left>0</left>
+  <right>0</right>
+</margins>
+
+<!-- keybindings -->
+<keyboard>
+  <!-- W/A/S/D-style virtual desktop switching -->
+  <keybind key="W-q"><action name="DesktopLeft"/></keybind>
+  <keybind key="W-e"><action name="DesktopRight"/></keybind>
+  <keybind key="W-1"><action name="Desktop"><desktop>1</desktop></action></keybind>
+  <keybind key="W-2"><action name="Desktop"><desktop>2</desktop></action></keybind>
+  <keybind key="W-3"><action name="Desktop"><desktop>3</desktop></action></keybind>
+  <keybind key="W-4"><action name="Desktop"><desktop>4</desktop></action></keybind>
+
+  <!-- Move windows between desktops -->
+  <keybind key="W-S-q"><action name="SendToDesktopLeft"/></keybind>
+  <keybind key="W-S-e"><action name="SendToDesktopRight"/></keybind>
+  <keybind key="W-S-1"><action name="SendToDesktop"><desktop>1</desktop></action></keybind>
+  <keybind key="W-S-2"><action name="SendToDesktop"><desktop>2</desktop></action></keybind>
+  <keybind key="W-S-3"><action name="SendToDesktop"><desktop>3</desktop></action></keybind>
+  <keybind key="W-S-4"><action name="SendToDesktop"><desktop>4</desktop></action></keybind>
+
+  <!-- Window management -->
+  <keybind key="W-Return"><action name="Execute"><command>wezterm</command></action></keybind>
+  <keybind key="W-d"><action name="Execute"><command>wofi --show drun</command></action></keybind>
+  <keybind key="W-c"><action name="Close"/></keybind>
+  <keybind key="W-f"><action name="ToggleMaximize"/></keybind>
+  <keybind key="W-m"><action name="ToggleMaximizeVert"/></keybind>
+  <keybind key="W-h"><action name="Iconify"/></keybind>
+  <keybind key="W-Space"><action name="ShowMenu"><menu>client-menu</menu></action></keybind>
+
+  <!-- Move/resize with vim keys (h/j/k/l) + mouse -->
+  <keybind key="W-A-h"><action name="MoveResizeTo"><x>0</x><y>0</y><width>50%</width><height>100%</height></action></keybind>
+  <keybind key="W-A-l"><action name="MoveResizeTo"><x>-0</x><y>0</y><width>50%</width><height>100%</height></action></keybind>
+  <keybind key="W-A-k"><action name="MoveResizeTo"><x>0</x><y>0</y><width>100%</width><height>50%</height></action></keybind>
+  <keybind key="W-A-j"><action name="MoveResizeTo"><x>0</x><y>-0</y><width>100%</width><height>50%</height></action></keybind>
+
+  <!-- Screenshot -->
+  <keybind key="Print"><action name="Execute"><command>scrot -e 'mv $f ~/Pictures/screenshots/'</command></action></keybind>
+  <keybind key="S-Print"><action name="Execute"><command>scrot -s -e 'mv $f ~/Pictures/screenshots/'</command></action></keybind>
+
+  <!-- Volume (pactl) -->
+  <keybind key="XF86AudioRaiseVolume"><action name="Execute"><command>pactl set-sink-volume @DEFAULT_SINK@ +5%</command></action></keybind>
+  <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>pactl set-sink-volume @DEFAULT_SINK@ -5%</command></action></keybind>
+  <keybind key="XF86AudioMute"><action name="Execute"><command>pactl set-sink-mute @DEFAULT_SINK@ toggle</command></action></keybind>
+
+  <!-- Brightness -->
+  <keybind key="XF86MonBrightnessUp"><action name="Execute"><command>brightnessctl set +10%</command></action></keybind>
+  <keybind key="XF86MonBrightnessDown"><action name="Execute"><command>brightnessctl set 10%-</command></action></keybind>
+</keyboard>
+
+<mouse>
+  <dragThreshold>8</dragThreshold>
+  <doubleClickTime>200</doubleClickTime>
+  <screenEdgeWarpTime>400</screenEdgeWarpTime>
+  <context name="Frame">
+    <mousebind button="W-Left" action="Press">
+      <action name="Focus"/>
+      <action name="Raise"/>
+    </mousebind>
+    <mousebind button="W-Left" action="Click">
+      <action name="Unshade"/>
+    </mousebind>
+    <mousebind button="A-Left" action="Press">
+      <action name="Focus"/>
+      <action name="Raise"/>
+    </mousebind>
+    <mousebind button="A-Left" action="Click">
+      <action name="ShowMenu"><menu>client-menu</menu></action>
+    </mousebind>
+    <mousebind button="W-Right" action="Press">
+      <action name="Focus"/>
+      <action name="Raise"/>
+      <action name="Unshade"/>
+    </mousebind>
+    <mousebind button="W-Right" action="Drag">
+      <action name="Resize"/>
+    </mousebind>
+  </context>
+  <context name="Titlebar">
+    <mousebind button="Left" action="Drag">
+      <action name="Move"/>
+    </mousebind>
+    <mousebind button="Left" action="DoubleClick">
+      <action name="ToggleMaximize"/>
+    </mousebind>
+    <mousebind button="Up" action="Click">
+      <action name="Shade"/>
+      <action name="Focus"/>
+      <action name="Raise"/>
+    </mousebind>
+    <mousebind button="Down" action="Click">
+      <action name="Unshade"/>
+      <action name="Focus"/>
+      <action name="Raise"/>
+    </mousebind>
+  </context>
+  <context name="Desktop">
+    <mousebind button="Right" action="Press">
+      <action name="ShowMenu"><menu>root-menu</menu></action>
+    </mousebind>
+    <mousebind button="Middle" action="Press">
+      <action name="ShowMenu"><menu>client-list-combined-menu</menu></action>
+    </mousebind>
+  </context>
+</mouse>
+
+<menu>
+  <file>menu.xml</file>
+  <hideDelay>200</hideDelay>
+  <middle>no</middle>
+  <submenuShowDelay>100</submenuShowDelay>
+  <submenuHideDelay>400</submenuHideDelay>
+  <showIcons>yes</showIcons>
+  <manageDesktops>yes</manageDesktops>
+</menu>
+
+<applications>
+  <!-- Center dialogs -->
+  <application class="*" type="dialog">
+    <position force="yes"><x>center</x><y>center</y></position>
+  </application>
+  <!-- WezTerm always on desktop 1 -->
+  <application name="wezterm">
+    <desktop>1</desktop>
+  </application>
+</applications>
+
+</openbox_config>
