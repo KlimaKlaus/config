@@ -16,7 +16,7 @@
   boot.initrd.systemd.emergencyAccess = true;
 
   # ── NVIDIA GPU ─────────────────────────────────────────────────
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
   services.displayManager.sddm.wayland.enable = false;
 
   hardware.graphics = {
@@ -35,6 +35,16 @@
 
 
   # ── Networking ─────────────────────────────────────────────────
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    prime.offload.enable = false;
+    prime.offload.enableOffloadCmd = false;
+  };
+  hardware.nvidia-container-toolkit.enable = true;
+  boot.blacklistedKernelModules = [ "nouveau" ];
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 ];
   services.tailscale.enable = true;
