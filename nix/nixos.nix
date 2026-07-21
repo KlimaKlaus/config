@@ -11,4 +11,5 @@
   imports = [
     ./nixos
   ];
+  programs.zsh.enable = true;
 }
