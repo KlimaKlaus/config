@@ -66,7 +66,6 @@
   environment.systemPackages = with pkgs; [
     cudaPackages.cuda_nvcc
     cudaPackages.cudnn
-    cudaPackages.cutensor
   ];
 
   # Container runtime for Docker GPU passthrough

@@ -62,9 +62,9 @@
     networkmanagerapplet   # Network tray icon
 
     # Fonts for waybar/icons
-    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+  # Fonts
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
 
     # Screenshot
     grim                   # Wayland screenshot
@@ -98,8 +98,7 @@
   # ── Fonts ──────────────────────────────────────────────────────
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-emoji
-    (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+    noto-fonts-color-emoji
   ];
   fonts.fontconfig.defaultFonts = {
     monospace = [ "FiraCode Nerd Font" ];
