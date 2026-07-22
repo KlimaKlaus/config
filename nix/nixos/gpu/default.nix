@@ -2,7 +2,7 @@
 # Dual NVIDIA GPU: RTX 3070 (8GB) + RTX 5070 Ti (16GB)
 # Driver: NVIDIA legacy_580 (580.142), open kernel modules, CUDA 13.0
 #
-# This module configures the system-level GPU infrastructure.
+# User-level services are managed via tmux (not systemd — see nix/hosts/freyr/gpu-services.md)
 # User-level service definitions are in nix/common/services/gpu-services.nix
 #
 # PCIe layout (from nvidia-smi topo -m):
