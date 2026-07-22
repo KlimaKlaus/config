@@ -31,6 +31,7 @@
     enable = true;
     oh-my-zsh = { enable = true; plugins = [ "git" ]; };
     initContent = ''
+      export TMUX_TMPDIR=/tmp
       export PATH="$HOME/.local/bin:$PATH"
       alias ll="eza -la --icons"
       alias lg="lazygit"
