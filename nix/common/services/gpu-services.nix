@@ -1,15 +1,19 @@
-# GPU Inference Services — Home-Manager User Services
-# Replaces tmux-based startup with proper systemd user services.
+# DEPRECATED — 2026-07-22: SUPERSEDED BY TMUX-BASED MANAGEMENT
+# This systemd user service definition was NEVER deployed.
+# GPU inference services are now managed by tmux session `klaus-inference`:
+#   /home/lucas/klaus-services/start-services.sh
+#
+# See: nix/hosts/freyr/gpu-services.md for current architecture.
+#
+# NOTE: The GPU numbering in this file was WRONG. The correct mapping is:
+#   CUDA_VISIBLE_DEVICES=0 = 5070 Ti, CUDA_VISIBLE_DEVICES=1 = 3070
+#
+# GPU Inference Services — Home-Manager User Services (DRAFT / UNUSED)
 # Applies to: NixOS host freyr (dual NVIDIA GPU)
 #
 # GPU layout:
 #   GPU 0 (bus 23:00.0) = RTX 3070 (8GB)    — monitor on DP-1
 #   GPU 1 (bus 2D:00.0) = RTX 5070 Ti (16GB) — headless compute
-#
-# Service→GPU mapping:
-#   CUDA_VISIBLE_DEVICES=1 (= 5070 Ti): WhisperX :9090, Embedding :8081
-#   CUDA_VISIBLE_DEVICES=0 (= 3070):    Vision Qwen :8083 (llama-server)
-#   CPU:                                Reranker :8082
 
 { config, pkgs, lib, hostname, ... }:
 
