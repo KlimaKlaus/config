@@ -47,12 +47,13 @@
   hardware.nvidia-container-toolkit.enable = true;
 
   # ── Prevent Suspend/Sleep (server must stay awake) ───────────
-  services.logind.extraConfig = ''
-    HandleLidSwitch=ignore
-    HandleSuspendKey=ignore
-    HandleHibernateKey=ignore
-    IdleAction=ignore
-  '';
+  services.logind.settings = {
+    Login = {
+      HandleLidSwitch = "ignore";
+      HandleSuspendKey = "ignore";
+      HandleHibernateKey = "ignore";
+    };
+  };
 
   # ── Linger for user services ──────────────────────────────────
   # Allows GPU services (systemd user units) to survive logout

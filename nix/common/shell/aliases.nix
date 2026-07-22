@@ -60,6 +60,6 @@
     if [ -x "$HOME/Desktop/code/repolicense-cli/zig-out/bin/repolicense" ]; then
       alias repolicense="$HOME/Desktop/code/repolicense-cli/zig-out/bin/repolicense"
     fi
-    alias gtop="~/klaus-services/gtop"
+    alias gtop='~/klaus-services/gtop'
   '';
 }
