@@ -29,6 +29,10 @@
             system.primaryUser = host.username;
             nixpkgs.config.allowUnfree = true;
             home-manager.backupFileExtension = "before-nix";
+            # Set home.stateVersion at home-manager top level (required by aerospace module)
+            home-manager.sharedModules = [
+              { home.stateVersion = host.stateVersion; }
+            ];
             home-manager.extraSpecialArgs = {
               flakeDir = self;
               inherit (host) username hostname homeDirectory stateVersion;
@@ -50,6 +54,10 @@
             networking.hostName = host.hostname;
             nixpkgs.config.allowUnfree = true;
             home-manager.backupFileExtension = "before-nix";
+            # Set home.stateVersion at home-manager top level (required by aerospace module)
+            home-manager.sharedModules = [
+              { home.stateVersion = host.stateVersion; }
+            ];
             home-manager.extraSpecialArgs = {
               flakeDir = self;
               inherit (host) username hostname homeDirectory stateVersion;
