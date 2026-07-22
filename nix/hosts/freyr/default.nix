@@ -9,6 +9,9 @@
 # model training, and developer tooling — compute in service of creation,
 # not combat. A fitting namesake for a dev/LLM workstation that gives up
 # conventional gaming power for a different kind of prosperity.
+#
+# GPU inference services are managed via tmux (not systemd).
+# See: nix/hosts/freyr/gpu-services.md for the full service catalog.
 {
   system = "x86_64-linux";          # Custom build PC — change if not x86_64
   username = "lucas";               # User on NixOS

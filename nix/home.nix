@@ -22,7 +22,7 @@
     ./common/vim.nix
     ./common/desktop
     ./common/dotfiles.nix
-    ./common/services/gpu-services.nix
+    # ./common/services/gpu-services.nix  # DEPRECATED — superseded by tmux (see nix/hosts/freyr/gpu-services.md)
   ];
 
   home = {
