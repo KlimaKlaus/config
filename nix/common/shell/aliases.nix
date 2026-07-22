@@ -6,8 +6,8 @@
     # ── SSH aliases (defined in ~/config/nix_secrets) ────────
     alias ssh-termux='ssh "$TERMUX_USER@$TERMUX_IP" -p "$TERMUX_PORT"'
     alias ssh-windows='ssh "$WINDOWS_USER@$WINDOWS_IP"'
-    alias ecoray-linux='ssh "$ECORAY_LINUX_USER@$ECORAY_LINUX_IP"'
-    alias sel='ecoray-linux'
+    alias ecoray-mimer='ssh "$ECORAY_MIMER_USER@$ECORAY_MIMER_IP"'
+    alias mimer='ecoray-mimer'
     alias ecoray-vps1='ssh "$ECORAY_VPS1_USER@$ECORAY_VPS1_IP"'
     alias se1='ecoray-vps1'
     alias se1lv='ssh -t "$ECORAY_VPS1_USER@$ECORAY_VPS1_IP" "cd .openclaw/workspace-louise && exec \$SHELL --login"'
@@ -20,6 +20,8 @@
     alias semd='ssh -t "$ECORAY_MAC_MINI_USER@$ECORAY_MAC_MINI_IP" "cd lucasfth/ecoray-web && git checkout development && git pull && exec \$SHELL --login"'
     alias ecoray-pi='ssh "$ECORAY_PI_USER@$ECORAY_PI_IP"'
     alias sep='ecoray-pi'
+    alias ecoray-freyr='ssh "$ECORAY_FREYR_USER@$ECORAY_FREYR_IP"'
+    alias freyr='ecoray-freyr'
 
     # ── General aliases ──────────────────────────────────────
     alias lg="lazygit"
