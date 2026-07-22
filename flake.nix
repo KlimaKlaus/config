@@ -15,6 +15,7 @@
 
   outputs = { self, nixpkgs, darwin, home-manager, ... }:
     let
+      lib = nixpkgs.lib;
       mkHost = path: import path;
 
       mkDarwin = hostname: let
@@ -28,12 +29,13 @@
             networking.hostName = host.hostname;
             system.primaryUser = host.username;
             nixpkgs.config.allowUnfree = true;
-            # Home-manager's nixos/common.nix needs users.users.<name>.home on nix-darwin
-            users.users.${host.username}.home = lib.mkForce host.homeDirectory;
             home-manager.backupFileExtension = "before-nix";
             # Set home.stateVersion at home-manager top level (required by aerospace module)
             home-manager.sharedModules = [
               { home.stateVersion = host.stateVersion; }
+              ({ lib, ... }: {
+                home.homeDirectory = lib.mkForce host.homeDirectory;
+              })
             ];
             home-manager.extraSpecialArgs = {
               flakeDir = self;
