@@ -28,6 +28,8 @@
             networking.hostName = host.hostname;
             system.primaryUser = host.username;
             nixpkgs.config.allowUnfree = true;
+            # Home-manager's nixos/common.nix needs users.users.<name>.home on nix-darwin
+            users.users.${host.username}.home = lib.mkForce host.homeDirectory;
             home-manager.backupFileExtension = "before-nix";
             # Set home.stateVersion at home-manager top level (required by aerospace module)
             home-manager.sharedModules = [
