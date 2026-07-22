@@ -42,6 +42,9 @@
 
   programs.starship.enable = true;
 
+  # Starship custom config — symlink from repo starship.toml
+  home.file.".config/starship.toml".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/starship.toml";
+
   # Vim
   programs.vim = {
     enable = true;
