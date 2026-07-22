@@ -59,9 +59,21 @@
           }
         ];
       };
+      mkHome = hostname: let
+        host = mkHost ./nix/hosts/${hostname};
+        pkgs = nixpkgs.legacyPackages.${host.system};
+      in home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          { home.stateVersion = host.stateVersion or "25.05"; }
+          ./nix/hosts/${hostname}/home.nix
+        ];
+      };
     in {
       darwinConfigurations."lucas-macbook-pro" = mkDarwin "lucas-macbook-pro";
 
       nixosConfigurations."freyr" = mkNixOS "freyr";
+
+      homeConfigurations."ecoray-admin@mimer" = mkHome "mimer";
     };
 }

@@ -8,4 +8,7 @@
     ./darwin/services.nix
     ./darwin/homebrew
   ];
+
+  # macOS-only: aerospace is defined here, not in shared packages
+  home-manager.users.lucas.home.packages = with pkgs; [ pkgs.aerospace ];
 }
