@@ -55,7 +55,7 @@
     };
     screencapture = {
       disable-shadow = true;
-      location = "/Users/lucasfreytorreshanson/Desktop/screenshots";
+      location = "/Users/${config.system.primaryUser}/Desktop/screenshots";
     };
 
     loginwindow = {

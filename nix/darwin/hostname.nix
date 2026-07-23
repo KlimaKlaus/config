@@ -11,7 +11,7 @@
   nix = {
     enable = true;
     settings = {
-      trusted-users = [ "lucasfreytorreshanson" "@admin" ];
+      trusted-users = [ "${config.system.primaryUser}" "@admin" ];
       auto-optimise-store = true;
     };
     gc = {
