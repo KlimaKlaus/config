@@ -83,7 +83,6 @@
       };
     in {
       darwinConfigurations."lucas-macbook-pro" = mkDarwin "lucas-macbook-pro";
-      darwinConfigurations."alexanders-mac-mini" = mkDarwin "alexanders-mac-mini";
 
       nixosConfigurations."freyr" = mkNixOS "freyr";
 
