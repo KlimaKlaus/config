@@ -121,7 +121,9 @@ lazygit/state.yml
 /.omp/agent/session*/*
 /.omp/agent/agent.d*
 /.omp/agent/history*
-/.omp/agent/models*
+/.omp/agent/models.db*
+/.omp/agent/models.yml
+/.omp/models.yml
 /.omp/agent/terminal*/*
 /.omp/agent/memories/*
 /.omp/agent/blobs/*

@@ -1,8 +1,8 @@
 ---
 type: skill
-tags: [freyr, nixos, ssh, sudo, tailscale]
+tags: [freyr, nixos, ssh, sudo, tailscale, llama, ollama, llm, omp]
 status: active
-updated: 2026-07-22
+updated: 2026-07-23
 ---
 
 # Sudo over SSH + Freyr
@@ -65,3 +65,67 @@ sleep 30 && ssh "$ECORAY_FREYR_USER@$ECORAY_FREYR_IP" 'tail -5 /tmp/build.log'
 
 - Gen 1: KDE Plasma, nixos-install, fallback (always boots)
 - Gen 25+: flake builds, Openbox + NVIDIA 3070, working
+
+## LLM services
+
+Freyr runs three inference services, all reachable directly via Tailscale from Lucas's Mac:
+
+| Port | Service | Model | GPU |
+|------|---------|-------|-----|
+| 8083 | llama.cpp | Qwen2.5-VL-7B-Instruct (Q4_K_M) | GPU 1 (RTX 5070 Ti) |
+| 11434 | Ollama | qwen2.5:7b-instruct | GPU 0 (RTX 3070) |
+
+Also running: embedding server, reranker server, and `server2.py` (klaus-services).
+
+### Vision model (port 8083)
+
+```bash
+curl -s http://$ECORAY_FREYR_IP:8083/v1/models
+# → qwen25-vl-7b, multimodal
+```
+
+Server alias: `qwen25-vl-7b`. Runs inside a restart loop (`vision_server.sh`) inside tmux.
+
+### Ollama (port 11434)
+
+```bash
+curl -s http://$ECORAY_FREYR_IP:11434/api/tags
+# → qwen2.5:7b-instruct
+```
+
+## OMP integration
+
+Freyr serves as the **vision** model role in OMP (`~/.omp/agent/config.yml`):
+
+```yaml
+modelRoles:
+  vision: freyr-vision/qwen25-vl-7b
+```
+
+Provider defined in `~/.omp/agent/models.yml`:
+
+```yaml
+providers:
+  freyr-vision:
+    baseUrl: http://$ECORAY_FREYR_IP:8083
+    auth: none
+    api: openai-completions
+    discovery:
+      type: llama.cpp
+
+  freyr-ollama:
+    baseUrl: http://$ECORAY_FREYR_IP:11434
+    api: openai-completions
+    discovery:
+      type: ollama
+```
+
+### Vision testing
+
+Vision works via the `inspect_image` tool (default disabled) or when OMP's main loop passes an image to the vision model. Direct API test:
+
+```bash
+curl -s http://$ECORAY_FREYR_IP:8083/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"qwen25-vl-7b","messages":[{"role":"user","content":[{"type":"text","text":"Describe this image"},{"type":"image_url","image_url":{"url":"data:image/png;base64,..."}}]}],"max_tokens":100}'
+```
