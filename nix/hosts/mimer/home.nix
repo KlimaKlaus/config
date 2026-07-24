@@ -17,10 +17,13 @@
   nixpkgs.config.allowUnfree = true;
 
   # Packages
+  # NOTE: tmux is NOT installed via Nix — Nix tmux 3.6a (glibc 2.42) has a
+  # TCGETS2 ioctl incompatibility with Ubuntu's kernel/PTS that causes
+  # "open terminal failed: not a terminal" when attaching. Use Ubuntu's
+  # system tmux (/usr/bin/tmux) instead.
   home.packages = with pkgs; [
     git gh curl wget
     htop btop nvitop
-    tmux
     ripgrep fd fzf bat eza jq tree
     cmake gcc gnumake python3
     zsh starship direnv delta zoxide
@@ -31,7 +34,8 @@
     enable = true;
     oh-my-zsh = { enable = true; plugins = [ "git" ]; };
     initContent = ''
-      export PATH="$HOME/.local/bin:$PATH"
+      export TMUX_TMPDIR=/tmp
+export PATH="$HOME/.local/bin:$PATH"
       alias ll="eza -la --icons"
       alias lg="lazygit"
       eval "$(direnv hook zsh)" 2>/dev/null
@@ -53,15 +57,12 @@
     extraConfig = "colorscheme catppuccin_mocha";
   };
 
-  # Tmux
+  # Tmux — use Ubuntu's system tmux, not Nix-provided tmux.
+  # Nix tmux 3.6a fails with "open terminal failed: not a terminal" on Ubuntu
+  # due to TCGETS2 ioctl issues with the Nix glibc 2.42 + libutempter helper
+  # not being setgid utmp. Ubuntu's tmux 3.4 works correctly.
   programs.tmux = {
-    enable = true;
-    shell = "${pkgs.zsh}/bin/zsh";
-    terminal = "tmux-256color";
-    historyLimit = 50000;
-    keyMode = "vi";
-    mouse = true;
-    prefix = "C-b";
+    enable = false;
   };
 
   # Git (no GPG)
